@@ -1,5 +1,7 @@
 # Presentación ejecutiva: 8 láminas
 
+**Archivo listo para presentar:** [`presentacion-director-soluciones.pptx`](presentacion-director-soluciones.pptx) (gráficos nativos y notas del orador en cada lámina). Se regenera con `node scripts/build_deck.js` (instalar antes con `npm --prefix scripts ci`). Este documento es la fuente del contenido.
+
 20 minutos de exposición + 10 de preguntas. Cada lámina responde una parte de:
 **QUÉ · POR QUÉ · CÓMO · CUÁNDO · CUÁNTO · CÓMO MEDIR · CÓMO CONTROLAR EL RIESGO**.
 (La calidad gráfica no se evalúa; sí el pensamiento, las decisiones y la viabilidad.)

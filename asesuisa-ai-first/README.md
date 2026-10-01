@@ -58,7 +58,7 @@ cd frontend && npm run typecheck && npm test && npm run build
 
 | Para la presentación | Para el diseño | Para la verificación |
 |---|---|---|
-| [`EXECUTIVE_STORY`](docs/EXECUTIVE_STORY.md) · [`PRESENTATION`](docs/PRESENTATION.md) (8 láminas) · [`SPEAKER_SCRIPT`](docs/SPEAKER_SCRIPT.md) (20 min) · [`QA`](docs/QA.md) (33 preguntas) · [`DEMO_SCRIPT`](docs/DEMO_SCRIPT.md) | [`OPERATING_MODEL`](docs/OPERATING_MODEL.md) · [`AI_GOVERNANCE`](docs/AI_GOVERNANCE.md) · [`USE_CASES`](docs/USE_CASES.md) (25) · [`ARCHITECTURE`](docs/ARCHITECTURE.md) · [`TECH_DECISION_MATRIX`](docs/TECH_DECISION_MATRIX.md) · [`DECISIONS`](docs/DECISIONS.md) · [`ROADMAP`](docs/ROADMAP.md) | [`PRODUCTIVITY_MODEL`](docs/PRODUCTIVITY_MODEL.md) · [`METRICS`](docs/METRICS.md) · [`REGULATORY`](docs/REGULATORY.md) · [`SECURITY`](docs/SECURITY.md) · [`RISKS`](docs/RISKS.md) · [`ASSUMPTIONS`](docs/ASSUMPTIONS.md) |
+| [`EXECUTIVE_STORY`](docs/EXECUTIVE_STORY.md) · [`PRESENTATION`](docs/PRESENTATION.md) (8 láminas · [`.pptx`](docs/presentacion-director-soluciones.pptx)) · [`SPEAKER_SCRIPT`](docs/SPEAKER_SCRIPT.md) (20 min) · [`QA`](docs/QA.md) (33 preguntas) · [`DEMO_SCRIPT`](docs/DEMO_SCRIPT.md) | [`OPERATING_MODEL`](docs/OPERATING_MODEL.md) · [`AI_GOVERNANCE`](docs/AI_GOVERNANCE.md) · [`USE_CASES`](docs/USE_CASES.md) (25) · [`ARCHITECTURE`](docs/ARCHITECTURE.md) · [`TECH_DECISION_MATRIX`](docs/TECH_DECISION_MATRIX.md) · [`DECISIONS`](docs/DECISIONS.md) · [`ROADMAP`](docs/ROADMAP.md) | [`PRODUCTIVITY_MODEL`](docs/PRODUCTIVITY_MODEL.md) · [`METRICS`](docs/METRICS.md) · [`REGULATORY`](docs/REGULATORY.md) · [`SECURITY`](docs/SECURITY.md) · [`RISKS`](docs/RISKS.md) · [`ASSUMPTIONS`](docs/ASSUMPTIONS.md) |
 
 ## Lo que hay que saber antes de usar estas cifras
 

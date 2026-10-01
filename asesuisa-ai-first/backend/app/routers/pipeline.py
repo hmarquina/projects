@@ -6,7 +6,7 @@ reconocer explícitamente los riesgos residuales. Ninguna salida de IA se aprueb
 """
 
 import json
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
@@ -215,9 +215,7 @@ def decide(
             "Segregación de funciones: no puede decidir quien creó este trabajo",
         )
     if body.decision == "approved" and not body.risk_acknowledged:
-        raise HTTPException(
-            status.HTTP_422_UNPROCESSABLE_CONTENT, "Aprobar exige reconocer los riesgos residuales"
-        )
+        raise HTTPException(422, "Aprobar exige reconocer los riesgos residuales")
     db.add(Approval(run_id=run_id, decision=body.decision, approver=who.username,
                     comment=body.comment, risk_acknowledged=int(body.risk_acknowledged)))  # fmt: skip
     row.status = body.decision
@@ -276,7 +274,7 @@ def create_release(
         "approved_by": appr.approver, "approved_at": appr.created_at.isoformat(),
         "readiness": json.loads(row.readiness_json)["score"],
         "files": {p: sha256(c) for p, c in sorted(payload.items())},
-        "created_at": datetime.now(UTC).isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
     }  # fmt: skip
     package = release.build_package(payload, manifest)
     pkg_hash = release.package_hash(package)

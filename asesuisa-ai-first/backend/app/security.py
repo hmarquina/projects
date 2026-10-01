@@ -8,7 +8,7 @@ import hashlib
 import hmac
 import os
 from collections.abc import Callable
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 import jwt
@@ -59,7 +59,7 @@ def verify_password(password: str, stored: str) -> bool:
 
 def create_token(username: str, role: str) -> str:
     s = get_settings()
-    now = datetime.now(UTC)
+    now = datetime.now(timezone.utc)
     claims = {
         "sub": username,
         "role": role,

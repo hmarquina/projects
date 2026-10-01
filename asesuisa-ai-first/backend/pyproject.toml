@@ -4,7 +4,7 @@ pythonpath = ["."]
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "S", "UP"]
@@ -20,6 +20,6 @@ ignore = ["S101"]
 "app/routers/metrics.py" = ["E501"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.10"
 strict = true
 plugins = []

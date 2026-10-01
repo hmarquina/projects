@@ -17,7 +17,7 @@ Proveedor por defecto: **mock determinista offline** (`AI_PROVIDER=mock`). Persi
 - Evaluación de IA (gate): `python -m app.ai.evaluation` (exit 1 si falla un umbral)
 - Usuarios demo: `DEMO_PASSWORD=<12+ chars> python -m app.seed`
 - Servidor: `JWT_SECRET=<32+ chars> uvicorn app.main:app --reload`
-- Toda la suite contra PostgreSQL real (embebido): `python scripts/test_postgres.py` (desde `asesuisa-ai-first/`)
+- Toda la suite contra PostgreSQL real (embebido; opcional): `pip install -r requirements-pgtest.txt && python scripts/test_postgres.py` (desde `asesuisa-ai-first/`)
 - Coherencia docs/código y permisos UI: `python scripts/check_docs.py` · `python scripts/check_ui_permissions.py`
 
 ## Frontend (desde `frontend/`)
@@ -27,7 +27,7 @@ Proveedor por defecto: **mock determinista offline** (`AI_PROVIDER=mock`). Persi
 - Trampa conocida: en Vitest un `beforeEach` que **devuelve** una función la ejecuta como limpieza; usar llaves.
 
 ## Convenciones
-- Python 3.11, typing estricto (mypy strict), Pydantic para validar toda entrada.
+- Python 3.10+ (probado en 3.10 y 3.11; **no usar** `datetime.UTC` ni otras APIs de 3.11+: hay un test que lo impide), typing estricto (mypy strict), Pydantic para validar toda entrada.
 - Routers finos; lógica en módulos; dependencias hacia adentro. Simplicidad sobre sobrearquitectura.
 - Español en docs y mensajes; inglés en identificadores.
 

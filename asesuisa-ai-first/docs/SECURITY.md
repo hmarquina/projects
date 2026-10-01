@@ -35,6 +35,7 @@ Marco conceptual: OWASP Top 10 for LLM Applications. Este documento no afirma cu
 
 1. **El sandbox es de proceso, no de contenedor.** Un `python -I` con entorno mínimo y límites de recursos mitiga, no aísla.
    Para código generado por un LLM real en producción: runner efímero en contenedor o gVisor, **sin red** y con sistema de archivos de solo lectura.
+1b. **En Windows el sandbox es aún más débil:** no hay límites de CPU, memoria ni tamaño de archivo (el módulo `resource` es solo de Unix); solo quedan el entorno mínimo, el timeout y la política estática. Para un LLM real, contenedor sin red.
 2. La política estática es lista blanca de imports y llamadas: reduce la superficie, no es una prueba de ausencia de comportamiento malicioso.
 3. Las pruebas generadas verifican el contrato y los controles básicos; **no** sustituyen pruebas de carga, de intrusión ni de seguridad dinámica (DAST).
 4. JWT local con HS256: en producción debe sustituirse por validación OIDC (JWKS) con el proveedor de identidad de la compañía.

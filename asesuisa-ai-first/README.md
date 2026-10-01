@@ -33,6 +33,8 @@ dependencias → evidencia y readiness → **aprobación humana segregada** → 
 
 ## Arranque rápido
 
+Requiere **Python 3.10 o superior** y Node 18+. Probado en Python 3.10 y 3.11 (Linux). **Windows:** instrucciones en PowerShell en [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md); no se ha ejecutado en un Windows real.
+
 Ver el detalle y la guía de la demo en [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). Resumen:
 
 ```bash
@@ -49,7 +51,7 @@ mkdir -p backend/data && cd backend && python -m app.seed && uvicorn app.main:ap
 cd backend && ruff check . && mypy app && bandit -q -r app && pip-audit -r requirements.txt
 python -m pytest -q                     # 148 pruebas (1 opcional con RUN_ONLINE_TESTS=1)
 python -m app.ai.evaluation             # gate de evaluación de IA (15 métricas); sale con 1 si falla
-cd .. && python scripts/test_postgres.py     # toda la suite contra PostgreSQL real
+cd .. && pip install -r backend/requirements-pgtest.txt && python scripts/test_postgres.py   # toda la suite contra PostgreSQL real (opcional)
 python scripts/check_docs.py && python scripts/check_ui_permissions.py
 cd frontend && npm run typecheck && npm test && npm run build
 ```

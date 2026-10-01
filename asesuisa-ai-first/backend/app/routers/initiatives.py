@@ -22,7 +22,7 @@ def create_initiative(
 ) -> Initiative:
     if find_pii(body.title + "\n" + body.description):
         raise HTTPException(
-            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            422,
             "El texto contiene datos personales; use datos sintéticos o enmascarados",
         )
     item = Initiative(title=body.title, description=body.description, created_by=who.username)
@@ -70,7 +70,7 @@ def update_initiative(
     description = body.description if body.description is not None else item.description
     if find_pii(title + "\n" + description):
         raise HTTPException(
-            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            422,
             "El texto contiene datos personales; use datos sintéticos o enmascarados",
         )
     item.title, item.description, item.status = title, description, "registered"

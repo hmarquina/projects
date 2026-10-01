@@ -5,7 +5,7 @@ Caso ficticio: **"Digitalización del proceso de reclamos"**. Todo el contenido 
 
 ## 0. Preparación (una sola vez)
 
-Desde `asesuisa-ai-first/`:
+Requiere **Python 3.10+** y Node 18+. En Linux/macOS, desde `asesuisa-ai-first/`:
 
 ```bash
 python -m venv .venv && . .venv/bin/activate
@@ -20,6 +20,27 @@ mkdir -p backend/data && cd backend && python -m app.seed && uvicorn app.main:ap
 ```
 
 Abrir <http://127.0.0.1:8000>. Con red y `PIPELINE_DEPENDENCY_AUDIT=true`, la auditoría de dependencias corre de verdad (≈ 10 s más por ejecución).
+
+**En Windows (PowerShell)** — Python 3.10 o superior:
+
+```powershell
+cd asesuisa-ai-first
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1          # si lo bloquea: Set-ExecutionPolicy -Scope Process Bypass
+pip install -r backend\requirements-dev.txt
+npm --prefix frontend ci
+npm --prefix frontend run build
+
+$env:JWT_SECRET = python -c "import secrets; print(secrets.token_hex(32))"
+$env:DEMO_PASSWORD = "elija-una-contraseña-de-12+"
+$env:PIPELINE_DEPENDENCY_AUDIT = "false"
+cd backend
+python -m app.seed
+uvicorn app.main:app --port 8000
+```
+
+Las variables `$env:` valen solo para esa ventana de PowerShell. Si abres otra, vuelve a definirlas (con la **misma** `DEMO_PASSWORD` que usaste en el seed).
+**Limitación en Windows:** el sandbox del pipeline no puede aplicar límites de CPU/memoria (el módulo `resource` es solo de Unix), así que el aislamiento es más débil. Está cubierto por tests en Linux que simulan esa ruta, pero **no se ha ejecutado en un Windows real**. Si algo falla ahí, el síntoma típico es un paso `pruebas` en estado `failed`: copia el detalle del paso.
 
 **Alternativa con Docker** (`docker compose up --build`, con `.env` a partir de `.env.example`): el `Dockerfile` y el Compose están escritos
 y su sintaxis validada, pero **no se han construido ni ejecutado** (no había demonio de Docker). Si la demo es en vivo, usa la opción anterior.

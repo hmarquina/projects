@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from pathlib import Path
 
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
@@ -11,7 +12,15 @@ class Base(DeclarativeBase):
     pass
 
 
+def _ensure_sqlite_dir(url: str) -> None:
+    """Un clon nuevo no tiene `data/`: sin esto, SQLite falla con "unable to open database file"."""
+    prefix = "sqlite:///"
+    if url.startswith(prefix) and ":memory:" not in url:
+        Path(url[len(prefix) :]).expanduser().parent.mkdir(parents=True, exist_ok=True)
+
+
 def make_engine(url: str) -> Engine:
+    _ensure_sqlite_dir(url)
     args = {"check_same_thread": False} if url.startswith("sqlite") else {}
     return create_engine(url, connect_args=args)
 

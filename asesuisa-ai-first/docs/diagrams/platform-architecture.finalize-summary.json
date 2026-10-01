@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.json",
+    "sha256": "6521dd73aeefba10f8c981c316cf4d3e879e3720b5e687d3d6e48a0988b9731f",
+    "bytes": 6221
+  },
+  "artifact": {
+    "path": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.html",
+    "sha256": "825fd03e629a9790fd7566431e7da18e582002ecd1bf981a5a9ad6ffab0a79ab",
+    "bytes": 768246
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.finalize.json",
+    "summaryReceipt": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.finalize-summary.json",
+    "browserCheckReceipt": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.browser-check.json"
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "disabled"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 3673
+}

@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "note": "Casos 100% sintéticos. Expectativas definidas por intención, no por la salida del modelo.",
+  "thresholds": {
+    "traceability": 1.0, "numeric_fidelity": 1.0, "story_recall": 1.0, "ac_coverage": 1.0,
+    "risk_recall": 1.0, "architecture_recall": 1.0, "api_validity": 1.0,
+    "honesty": 1.0, "consistency": 1.0
+  },
+  "cases": [
+    {
+      "id": "claims-digital",
+      "text": "El asegurado debe registrar un reclamo desde el portal web en menos de 3 minutos para recibir un número de seguimiento. El sistema deberá responder en menos de 2 segundos para el 95% de solicitudes, exigir autenticación y dejar trazabilidad en un log de auditoría. La disponibilidad mensual mínima será de 99.5% y el ajustador podrá consultar el estado del reclamo en cualquier momento.",
+      "story_actors": ["asegurado", "ajustador"],
+      "unconfirmed_benefit": ["US-2"],
+      "constraints": ["menos de 3 minutos", "menos de 2 segundos", "95%", "99.5%"],
+      "risk_categories": ["privacidad", "fraude", "desempeño", "cambio productivo", "artefactos generados por IA"],
+      "components": ["Portal web", "API de negocio", "Bitácora de auditoría"],
+      "api_paths": ["/reclamos", "/reclamos/{id}"]
+    },
+    {
+      "id": "payments-legacy",
+      "text": "El analista debe aprobar el pago de la indemnización en menos de 2 días. El sistema debe integrarse con el core legacy de pólizas mediante una interfaz con autenticación. El sistema deberá enviar una notificación por correo al cliente cuando el pago sea aprobado y permitir adjuntar documentos de evidencia. La disponibilidad será de 99.9% y debe existir trazabilidad en un log de auditoría para cada aprobación.",
+      "story_actors": ["analista"],
+      "unconfirmed_benefit": ["US-1"],
+      "constraints": ["menos de 2 días", "99.9%"],
+      "risk_categories": ["integración", "integridad financiera", "fraude", "cambio productivo"],
+      "components": ["Capa anticorrupción", "Adaptador de pagos", "Servicio de notificaciones", "Almacén de documentos"],
+      "api_paths": ["/pagos/{id}/aprobacion"]
+    }
+  ]
+}

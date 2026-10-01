@@ -1,0 +1,30 @@
+# Demo local reproducible. Requiere un archivo .env (ver .env.example); nada se hardcodea aquí.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD en .env}
+      POSTGRES_DB: control_tower
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d control_tower"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:${POSTGRES_PASSWORD}@db:5432/control_tower
+      JWT_SECRET: ${JWT_SECRET:?defina JWT_SECRET (32+ caracteres) en .env}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:?defina DEMO_PASSWORD (12+ caracteres) en .env}
+      AI_PROVIDER: mock
+      PIPELINE_DEPENDENCY_AUDIT: ${PIPELINE_DEPENDENCY_AUDIT:-true}
+    ports:
+      - "127.0.0.1:8000:8000"
+    command: ["sh", "-c", "python -m app.seed && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+volumes:
+  pgdata:

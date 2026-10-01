@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "AI Engineering Control Tower — arquitectura (estado Fase 5)",
+    "output": "docs/diagrams/platform-architecture.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "Usuario",
+      "sublabel": "Analista / Tech Lead",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "Control Tower UI",
+      "sublabel": "React/TS · 12 vistas",
+      "pos": [
+        250,
+        300
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "API de negocio",
+      "sublabel": "FastAPI · RBAC · JWT",
+      "pos": [
+        470,
+        300
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "orch",
+      "type": "backend",
+      "label": "Orquestación IA",
+      "sublabel": "prompts · gate DoR",
+      "pos": [
+        700,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "gateway",
+      "type": "security",
+      "label": "Model Gateway",
+      "sublabel": "redacta PII · fallback",
+      "pos": [
+        950,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "provider",
+      "type": "external",
+      "label": "Proveedor LLM",
+      "sublabel": "mock hoy · configurable",
+      "pos": [
+        1200,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "Base de datos",
+      "sublabel": "SQLite · PostgreSQL 16",
+      "pos": [
+        250,
+        450
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "audit",
+      "type": "security",
+      "label": "Auditoría",
+      "sublabel": "hash encadenado",
+      "pos": [
+        470,
+        150
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "eval",
+      "type": "backend",
+      "label": "Evaluación IA",
+      "sublabel": "golden datasets · CI",
+      "pos": [
+        700,
+        150
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "pipeline",
+      "type": "backend",
+      "label": "Pipeline de entrega",
+      "sublabel": "política · pruebas · SAST",
+      "pos": [
+        465,
+        450
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "approval",
+      "type": "security",
+      "label": "Aprobación humana",
+      "sublabel": "segregación de funciones",
+      "pos": [
+        700,
+        450
+      ],
+      "size": [
+        150,
+        60
+      ],
+      "tag": "gate"
+    },
+    {
+      "id": "release",
+      "type": "cloud",
+      "label": "Release package",
+      "sublabel": "zip + manifest + hashes",
+      "pos": [
+        950,
+        450
+      ],
+      "size": [
+        150,
+        60
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Entorno de la compañía",
+      "wraps": [
+        "ui",
+        "api",
+        "orch",
+        "gateway",
+        "db",
+        "audit",
+        "eval",
+        "pipeline",
+        "approval",
+        "release"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "user-to-ui",
+      "from": "user",
+      "to": "ui",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ui-to-api",
+      "from": "ui",
+      "to": "api",
+      "label": "REST"
+    },
+    {
+      "id": "api-to-orch",
+      "from": "api",
+      "to": "orch",
+      "label": "gate",
+      "variant": "emphasis"
+    },
+    {
+      "id": "orch-to-gateway",
+      "from": "orch",
+      "to": "gateway",
+      "label": "prompt"
+    },
+    {
+      "id": "gateway-to-provider",
+      "from": "gateway",
+      "to": "provider",
+      "label": "sin PII",
+      "variant": "security"
+    },
+    {
+      "id": "api-to-audit",
+      "from": "api",
+      "to": "audit",
+      "label": "evento",
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "eval-to-orch",
+      "from": "eval",
+      "to": "orch",
+      "label": "evalúa",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "api-to-db",
+      "from": "api",
+      "to": "db",
+      "label": "SQL",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "orthogonal-v"
+    },
+    {
+      "id": "api-to-pipeline",
+      "from": "api",
+      "to": "pipeline",
+      "label": "ejecuta",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "pipeline-to-approval",
+      "from": "pipeline",
+      "to": "approval",
+      "label": "evidencia",
+      "variant": "security"
+    },
+    {
+      "id": "approval-to-release",
+      "from": "approval",
+      "to": "release",
+      "label": "aprobado",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Implementado y probado",
+      "items": [
+        "API con JWT, RBAC y segregación de funciones",
+        "Gate de Definition of Ready; Gateway con redacción de PII",
+        "Pipeline: código y pruebas generados, ejecutados y auditados",
+        "UI Control Tower: 27 pruebas y E2E de 16 pasos en navegador real",
+        "Suite completa también contra PostgreSQL 16 real"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Controles",
+      "items": [
+        "Política estática antes de ejecutar código generado",
+        "Pruebas contra el contrato OpenAPI, SAST y escaneo de secretos",
+        "Aprobación humana con reconocimiento de riesgos",
+        "Auditoría append-only con hash encadenado"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Pendiente o sin ejecutar",
+      "items": [
+        "Proveedor LLM real: hoy solo mock determinista",
+        "Aislamiento por contenedor sin red para el sandbox",
+        "Dockerfile, Compose y CI: escritos, no ejecutados",
+        "RAG, OpenTelemetry y OIDC: solo diseño"
+      ]
+    }
+  ]
+}

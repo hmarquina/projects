@@ -7,6 +7,7 @@ _tmp = tempfile.mkdtemp()
 os.environ["DATABASE_URL"] = f"sqlite:///{_tmp}/test.db"
 os.environ["JWT_SECRET"] = "test-secret-" + "x" * 40
 os.environ["DEMO_PASSWORD"] = "synthetic-demo-pass-123"
+os.environ["PIPELINE_DEPENDENCY_AUDIT"] = "false"  # tests offline; hay un test dedicado
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
@@ -26,6 +27,7 @@ def client() -> Iterator[TestClient]:
         seed_users(db, PASSWORD)
     with TestClient(app) as c:
         yield c
+    app.dependency_overrides.clear()
 
 
 @pytest.fixture

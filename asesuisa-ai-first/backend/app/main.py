@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.db import Base, engine
-from app.routers import analysis, artifacts, audit, auth, initiatives
+from app.routers import analysis, artifacts, audit, auth, initiatives, pipeline
 
 
 @asynccontextmanager
@@ -18,6 +18,7 @@ app.include_router(auth.router)
 app.include_router(initiatives.router)
 app.include_router(analysis.router)
 app.include_router(artifacts.router)
+app.include_router(pipeline.router)
 app.include_router(audit.router)
 
 

@@ -12,6 +12,8 @@ Proveedor por defecto: **mock determinista offline** (`AI_PROVIDER=mock`). Persi
 - Instalar: `pip install -r requirements-dev.txt`
 - Tests: `python -m pytest -q`
 - Lint / tipos / seguridad: `ruff check .` · `mypy app` · `bandit -q -r app` · `pip-audit -r requirements.txt`
+- Pruebas online (pip-audit real, requiere red): `RUN_ONLINE_TESTS=1 python -m pytest -q`
+- Pipeline: `PIPELINE_DEPENDENCY_AUDIT=false` desactiva pip-audit (queda `skipped`, no `passed`)
 - Evaluación de IA (gate): `python -m app.ai.evaluation` (exit 1 si falla un umbral)
 - Usuarios demo: `DEMO_PASSWORD=<12+ chars> python -m app.seed`
 - Servidor: `JWT_SECRET=<32+ chars> uvicorn app.main:app --reload`
@@ -44,3 +46,10 @@ registrar supuestos (`ASSUMPTION`) y decisiones (ADR) · cambios reproducibles.
   `ARCHIFY_UPDATE_CHECK_DISABLED=1 ARCHIFY_CHROME=/opt/pw-browsers/chromium-1194/chrome-linux/chrome node ../.claude/skills/archify/bin/archify.mjs finalize architecture docs/diagrams/<x>.json docs/diagrams/<x>.html --quality showcase --json`
 - Revisar el render con `visual-check --summary --out-dir <dir>` antes de afirmar calidad visual.
 - Los diagramas deben reflejar lo construido; lo pendiente se rotula como pendiente.
+
+## Pipeline de entrega (Fase 4)
+Flujo: artefactos vigentes → código + pruebas (vía Model Gateway) → política estática → sandbox de
+pruebas → bandit + secretos + dependencias → README → evidencia → readiness → aprobación humana → release.
+- Un `blocked` es definitivo: no admite decisión ni release. `skipped` ≠ `passed`.
+- Ejecuta `tech_lead`, aprueba `approver`, publica `tech_lead`. Nadie aprueba su propio trabajo.
+- El sandbox es de proceso, NO de contenedor: no ejecutar código no confiable fuera de una demo.

@@ -6,6 +6,7 @@ from pydantic import BaseModel as _Model
 
 from app.ai import artifact_generators as gen
 from app.ai import requirement_analyzer
+from app.pipeline import codegen, testgen
 
 
 class CompletionRequest(BaseModel):
@@ -42,4 +43,6 @@ _HANDLERS: dict[str, Callable[[str], _Model]] = {
     "risk_assessment": gen.derive_risks,
     "architecture_proposal": gen.derive_architecture,
     "api_contract": gen.derive_api_contract,
+    "code_skeleton": codegen.generate,
+    "test_generation": testgen.generate,
 }

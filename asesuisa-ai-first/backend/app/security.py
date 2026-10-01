@@ -26,7 +26,9 @@ PERMISSIONS: dict[str, frozenset[str]] = {
     "analyst": frozenset(
         {"initiative:read", "initiative:create", "initiative:update", "ai:analyze", "ai:generate"}
     ),
-    "tech_lead": frozenset({"initiative:read", "ai:analyze", "ai:generate", "pipeline:run"}),
+    "tech_lead": frozenset(
+        {"initiative:read", "ai:analyze", "ai:generate", "pipeline:run", "release:create"}
+    ),
     "security": frozenset({"initiative:read", "security:review", "audit:read"}),
     "approver": frozenset({"initiative:read", "release:approve", "audit:read"}),
     "admin": frozenset({"initiative:read", "audit:read", "user:manage"}),

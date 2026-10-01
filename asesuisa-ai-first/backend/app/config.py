@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     jwt_ttl_minutes: int = 60
     demo_password: str = Field(default="", repr=False)
     ai_provider: str = "mock"
+    pipeline_dependency_audit: bool = True
+    pipeline_timeout_seconds: int = 90
 
     def require_jwt_secret(self) -> str:
         if len(self.jwt_secret) < 32:

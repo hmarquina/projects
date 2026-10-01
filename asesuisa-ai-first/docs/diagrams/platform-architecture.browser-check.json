@@ -6,11 +6,11 @@
   "status": "pass",
   "visualReview": "not-requested",
   "provenance": "current",
-  "deliveryReceiptId": "c2b3c79b-927a-496b-a8a7-a2e954e988f9",
+  "deliveryReceiptId": "7b100bae-4391-4312-a140-97fa238d84e7",
   "artifact": {
     "path": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.html",
-    "sha256": "89c8a83d27c51b16d6ad228da37d885afab225445223440ddafef14b5e0e8028",
-    "bytes": 761172
+    "sha256": "2871451c147053c06a38d8f04eaf0a7946a2cfc324490e3871202231ca4e7c93",
+    "bytes": 768249
   },
   "state": {
     "detail": "read",

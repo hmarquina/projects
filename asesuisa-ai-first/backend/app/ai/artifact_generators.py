@@ -403,8 +403,7 @@ def derive_api_contract(text: str) -> ApiContractOutput:
             "parameters": [{"name": "id", "in": "path", "required": True,
                             "schema": {"type": "string", "format": "uuid"}}],
             "responses": {"200": {"description": "OK", "content": ok_item},
-                          "404": resp("No encontrado"),
-                          **{k: v for k, v in common.items() if k != "400"}},
+                          "404": resp("No encontrado"), **common},
         }}  # fmt: skip
     for verb, action in (("actualizar", "patch"), ("cancelar", "delete")):
         if verb in verbs:

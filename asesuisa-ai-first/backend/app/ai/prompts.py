@@ -63,6 +63,18 @@ _REGISTRY: dict[str, PromptTemplate] = {
         version="1.0.0",
         system="Genera un contrato OpenAPI 3.1 con seguridad y errores definidos. " + _SYSTEM_RULES,
     ),
+    "code_skeleton": PromptTemplate(
+        id="code_skeleton",
+        version="1.0.0",
+        system="Genera el skeleton de un servicio a partir del contrato OpenAPI. Sin secretos en código, sin imports fuera de la lista permitida. "
+        + _SYSTEM_RULES,
+    ),
+    "test_generation": PromptTemplate(
+        id="test_generation",
+        version="1.0.0",
+        system="Genera pruebas pytest contra el contrato y el mapeo criterio→prueba. "
+        + _SYSTEM_RULES,
+    ),
 }
 
 

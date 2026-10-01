@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app import audit
+from app.ai.guardrails import find_pii
 from app.db import get_db
 from app.models import Initiative
 from app.schemas import InitiativeCreate, InitiativeOut
@@ -19,6 +20,11 @@ def create_initiative(
     db: Annotated[Session, Depends(get_db)],
     who: Annotated[Principal, Depends(require("initiative:create"))],
 ) -> Initiative:
+    if find_pii(body.title + "\n" + body.description):
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            "El texto contiene datos personales; use datos sintéticos o enmascarados",
+        )
     item = Initiative(title=body.title, description=body.description, created_by=who.username)
     db.add(item)
     db.commit()

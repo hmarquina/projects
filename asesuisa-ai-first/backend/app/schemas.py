@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.ai.requirement_schema import RequirementAnalysis
+
 
 class LoginRequest(BaseModel):
     username: str = Field(min_length=1, max_length=64)
@@ -51,3 +53,19 @@ class AuditOut(BaseModel):
 class AuditVerifyOut(BaseModel):
     intact: bool
     first_tampered_id: int | None
+
+
+class AnalysisOut(BaseModel):
+    id: int
+    initiative_id: int
+    kind: str
+    score: int
+    ready: bool
+    rating: str
+    prompt_label: str
+    model: str
+    pii_redactions: dict[str, int]
+    injection_flags: int
+    result: RequirementAnalysis
+    created_by: str
+    created_at: datetime

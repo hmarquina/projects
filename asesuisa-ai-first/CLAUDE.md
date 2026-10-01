@@ -12,6 +12,7 @@ Proveedor por defecto: **mock determinista offline** (`AI_PROVIDER=mock`). Persi
 - Instalar: `pip install -r requirements-dev.txt`
 - Tests: `python -m pytest -q`
 - Lint / tipos / seguridad: `ruff check .` · `mypy app` · `bandit -q -r app` · `pip-audit -r requirements.txt`
+- Evaluación de IA (gate): `python -m app.ai.evaluation` (exit 1 si falla un umbral)
 - Usuarios demo: `DEMO_PASSWORD=<12+ chars> python -m app.seed`
 - Servidor: `JWT_SECRET=<32+ chars> uvicorn app.main:app --reload`
 

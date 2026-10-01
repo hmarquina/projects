@@ -30,6 +30,24 @@ class Initiative(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class Analysis(Base):
+    """Resultado de un análisis de IA. Contiene texto ya redactado (sin PII)."""
+
+    __tablename__ = "analyses"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    initiative_id: Mapped[int] = mapped_column(Integer, index=True)
+    kind: Mapped[str] = mapped_column(String(32))
+    prompt_label: Mapped[str] = mapped_column(String(96))
+    model: Mapped[str] = mapped_column(String(64))
+    score: Mapped[int] = mapped_column(Integer)
+    result_json: Mapped[str] = mapped_column(Text)
+    pii_redactions: Mapped[str] = mapped_column(String(200), default="")
+    injection_flags: Mapped[int] = mapped_column(Integer, default=0)
+    created_by: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class AuditEvent(Base):
     """Registro append-only con hash encadenado. Guarda referencias (hash), no contenido."""
 
@@ -51,4 +69,4 @@ class AuditEvent(Base):
     hash: Mapped[str] = mapped_column(String(64), default="")
 
 
-__all__ = ["AuditEvent", "Initiative", "User"]
+__all__ = ["Analysis", "AuditEvent", "Initiative", "User"]

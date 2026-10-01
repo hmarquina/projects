@@ -2,7 +2,7 @@
 
 import hashlib
 import json
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from sqlalchemy import select
@@ -32,7 +32,7 @@ def record(db: Session, *, user: str, role: str, action: str, **fields: Any) -> 
     # columna, el hash se calcularía con None y la verificación posterior con "".
     values: dict[str, Any] = {f: "" for f in _HASH_FIELDS}
     values.update(
-        timestamp=datetime.now(UTC).isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         user=user,
         role=role,
         action=action,

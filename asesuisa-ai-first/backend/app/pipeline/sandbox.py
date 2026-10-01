@@ -6,7 +6,7 @@ un runner efímero sin red (p. ej. contenedor/gVisor). La política estática co
 """
 
 import json
-import resource
+import os
 import secrets
 
 # ejecución controlada del intérprete propio, sin shell
@@ -15,6 +15,21 @@ import sys
 import tempfile
 from pathlib import Path
 from typing import Any
+
+try:  # `resource` no existe en Windows: allí no hay límites de proceso (aislamiento más débil)
+    import resource
+except ImportError:  # pragma: no cover - solo en Windows
+    resource = None  # type: ignore[assignment]
+
+_HAS_RLIMIT = resource is not None
+
+
+def absolute_python(executable: str) -> str:
+    """`sys.executable` puede ser relativo (p. ej. `../.venv/bin/python`); los hijos corren en otro cwd."""
+    return os.path.abspath(executable)
+
+
+PYTHON = absolute_python(sys.executable)  # se fija al importar, con el cwd de arranque
 
 # Harness inyectado por la plataforma (no forma parte del código generado ni pasa por la política).
 _HARNESS = """import json
@@ -35,7 +50,9 @@ def pytest_sessionfinish(session, exitstatus):
 """
 
 
-def _limits() -> None:  # pragma: no cover - corre en el proceso hijo
+def _limits() -> None:  # pragma: no cover - corre en el proceso hijo (solo POSIX)
+    if resource is None:  # no debería ocurrir: solo se llama si hay `resource`
+        return
     resource.setrlimit(resource.RLIMIT_CPU, (60, 60))
     resource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3, 2 * 1024**3))
     resource.setrlimit(resource.RLIMIT_FSIZE, (50 * 1024**2, 50 * 1024**2))
@@ -50,20 +67,31 @@ def materialize(root: Path, files: dict[str, str]) -> None:
         target.write_text(content, encoding="utf-8")
 
 
+def build_env(tmp: str, results: Path, windows: bool | None = None) -> dict[str, str]:
+    """Entorno mínimo del proceso hijo: sin secretos de la plataforma."""
+    is_windows = os.name == "nt" if windows is None else windows
+    env = {
+        "PATH": "/usr/bin:/bin",
+        "HOME": tmp,
+        "PYTHONHASHSEED": "0",
+        "PIPELINE_RESULTS": str(results),
+        "JWT_SECRET": secrets.token_hex(32),
+    }
+    if is_windows:  # Python en Windows no arranca sin SYSTEMROOT
+        for key in ("SYSTEMROOT", "SYSTEMDRIVE", "TEMP", "TMP"):
+            if key in os.environ:
+                env[key] = os.environ[key]
+    return env
+
+
 def run_tests(files: dict[str, str], timeout: int = 90) -> dict[str, Any]:
     with tempfile.TemporaryDirectory(prefix="pipeline-") as tmp:
         root = Path(tmp)
         materialize(root, files)
         (root / "conftest.py").write_text(_HARNESS, encoding="utf-8")
         results = root / "results.json"
-        env = {
-            "PATH": "/usr/bin:/bin",
-            "HOME": tmp,
-            "PYTHONHASHSEED": "0",
-            "PIPELINE_RESULTS": str(results),
-            "JWT_SECRET": secrets.token_hex(32),
-        }
-        cmd = [sys.executable, "-I", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider",
+        env = build_env(tmp, results)
+        cmd = [PYTHON, "-I", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider",
                "--tb=short"]  # fmt: skip
         try:
             proc = subprocess.run(  # noqa: S603  # nosec B603
@@ -73,7 +101,7 @@ def run_tests(files: dict[str, str], timeout: int = 90) -> dict[str, Any]:
                 capture_output=True,
                 text=True,
                 timeout=timeout,
-                preexec_fn=_limits,  # noqa: PLW1509
+                preexec_fn=_limits if _HAS_RLIMIT else None,  # noqa: PLW1509
             )
         except subprocess.TimeoutExpired:
             return {"ok": False, "reason": f"timeout de {timeout}s", "tests": [], "output": ""}

@@ -7,4 +7,3 @@ bandit>=1.7
 pip-audit>=2.7
 openapi-spec-validator>=0.7
 -r requirements-postgres.txt
-pgserver>=0.1

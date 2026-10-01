@@ -1,0 +1,2 @@
+-r requirements-postgres.txt
+pgserver>=0.1  # solo para scripts/test_postgres.py (PostgreSQL embebido); opcional

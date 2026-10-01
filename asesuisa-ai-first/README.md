@@ -33,6 +33,8 @@ dependencias → evidencia y readiness → **aprobación humana segregada** → 
 
 ## Arranque rápido
 
+Requiere **Python 3.10 o superior** y Node 18+. Probado en Python 3.10 y 3.11 (Linux). **Windows:** instrucciones en PowerShell en [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md); no se ha ejecutado en un Windows real.
+
 Ver el detalle y la guía de la demo en [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). Resumen:
 
 ```bash
@@ -40,7 +42,7 @@ python -m venv .venv && . .venv/bin/activate && pip install -r backend/requireme
 npm --prefix frontend ci && npm --prefix frontend run build
 export DATABASE_URL=sqlite:///./data/demo.db JWT_SECRET="$(python -c 'import secrets; print(secrets.token_hex(32))')"
 export DEMO_PASSWORD="una-contraseña-de-12+" PIPELINE_DEPENDENCY_AUDIT=false
-mkdir -p backend/data && cd backend && python -m app.seed && uvicorn app.main:app --port 8000   # → http://127.0.0.1:8000
+mkdir -p backend/data && cd backend && python -m app.seed && python -m app   # → http://127.0.0.1:8765  (otro puerto: APP_PORT=9000)
 ```
 
 ## Verificar por tu cuenta
@@ -49,7 +51,7 @@ mkdir -p backend/data && cd backend && python -m app.seed && uvicorn app.main:ap
 cd backend && ruff check . && mypy app && bandit -q -r app && pip-audit -r requirements.txt
 python -m pytest -q                     # 148 pruebas (1 opcional con RUN_ONLINE_TESTS=1)
 python -m app.ai.evaluation             # gate de evaluación de IA (15 métricas); sale con 1 si falla
-cd .. && python scripts/test_postgres.py     # toda la suite contra PostgreSQL real
+cd .. && pip install -r backend/requirements-pgtest.txt && python scripts/test_postgres.py   # toda la suite contra PostgreSQL real (opcional)
 python scripts/check_docs.py && python scripts/check_ui_permissions.py
 cd frontend && npm run typecheck && npm test && npm run build
 ```

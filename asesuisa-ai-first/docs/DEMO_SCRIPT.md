@@ -5,7 +5,7 @@ Caso ficticio: **"Digitalización del proceso de reclamos"**. Todo el contenido 
 
 ## 0. Preparación (una sola vez)
 
-Desde `asesuisa-ai-first/`:
+Requiere **Python 3.10+** y Node 18+. En Linux/macOS, desde `asesuisa-ai-first/`:
 
 ```bash
 python -m venv .venv && . .venv/bin/activate
@@ -16,10 +16,31 @@ export DATABASE_URL=sqlite:///./data/demo.db            # relativo a backend/
 export JWT_SECRET="$(python -c 'import secrets; print(secrets.token_hex(32))')"
 export DEMO_PASSWORD="elija-una-contraseña-de-12+"     # la usará para entrar con todos los usuarios demo
 export PIPELINE_DEPENDENCY_AUDIT=false                  # offline: la auditoría de dependencias queda "no verificada"
-mkdir -p backend/data && cd backend && python -m app.seed && uvicorn app.main:app --port 8000
+mkdir -p backend/data && cd backend && python -m app.seed && python -m app
 ```
 
-Abrir <http://127.0.0.1:8000>. Con red y `PIPELINE_DEPENDENCY_AUDIT=true`, la auditoría de dependencias corre de verdad (≈ 10 s más por ejecución).
+Abrir <http://127.0.0.1:8765>. **Otro puerto** (si el 8765 está ocupado): `export APP_PORT=9000` antes de `python -m app` (en PowerShell: `$env:APP_PORT = "9000"`) y abrir ese puerto. Con red y `PIPELINE_DEPENDENCY_AUDIT=true`, la auditoría de dependencias corre de verdad (≈ 10 s más por ejecución).
+
+**En Windows (PowerShell)** — Python 3.10 o superior:
+
+```powershell
+cd asesuisa-ai-first
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1          # si lo bloquea: Set-ExecutionPolicy -Scope Process Bypass
+pip install -r backend\requirements-dev.txt
+npm --prefix frontend ci
+npm --prefix frontend run build
+
+$env:JWT_SECRET = python -c "import secrets; print(secrets.token_hex(32))"
+$env:DEMO_PASSWORD = "elija-una-contraseña-de-12+"
+$env:PIPELINE_DEPENDENCY_AUDIT = "false"
+cd backend
+python -m app.seed
+python -m app
+```
+
+Las variables `$env:` valen solo para esa ventana de PowerShell. Si abres otra, vuelve a definirlas (con la **misma** `DEMO_PASSWORD` que usaste en el seed).
+**Limitación en Windows:** el sandbox del pipeline no puede aplicar límites de CPU/memoria (el módulo `resource` es solo de Unix), así que el aislamiento es más débil. Está cubierto por tests en Linux que simulan esa ruta, pero **no se ha ejecutado en un Windows real**. Si algo falla ahí, el síntoma típico es un paso `pruebas` en estado `failed`: copia el detalle del paso.
 
 **Alternativa con Docker** (`docker compose up --build`, con `.env` a partir de `.env.example`): el `Dockerfile` y el Compose están escritos
 y su sintaxis validada, pero **no se han construido ni ejecutado** (no había demonio de Docker). Si la demo es en vivo, usa la opción anterior.
@@ -70,7 +91,7 @@ Usuarios: `demo_analyst`, `demo_tech_lead`, `demo_approver`, `demo_security`, `d
 | Login falla | `DEMO_PASSWORD` distinta a la usada en `app.seed` | Borrar `backend/data/demo.db` y repetir el seed |
 | Pipeline responde 409 "Falta el artefacto" | No se generaron los 5 artefactos o se editó el requerimiento después | Volver a analizar y generar |
 | Pipeline "bloqueado" | Un control funcionó | **Es parte de la demo**: lee el paso fallido en la tabla |
-| Pantalla vacía en `:8000` | Falta compilar la UI | `npm --prefix frontend run build` |
+| Pantalla vacía en el puerto del servidor | Falta compilar la UI | `npm --prefix frontend run build` |
 
 ## Preguntas que la demo provoca
 Ver `QA.md`: #2 (¿duplicamos?), #8 (fuga de datos), #9 (código inseguro), #11 (dónde se ejecuta el código), #12 (quién responde).

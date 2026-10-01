@@ -46,9 +46,7 @@ def analyze_requirement(
     if item is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Iniciativa no encontrada")
     if not item.description.strip():
-        raise HTTPException(
-            status.HTTP_422_UNPROCESSABLE_CONTENT, "La iniciativa no tiene requerimiento"
-        )
+        raise HTTPException(422, "La iniciativa no tiene requerimiento")
     try:
         res = gateway.run("requirement_quality", item.description, RequirementAnalysis)
     except GatewayError as exc:

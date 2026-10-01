@@ -23,4 +23,5 @@
 | ADR-019 | Las métricas organizacionales muestran `sin dato`; solo se miden las de uso de la plataforma | No presentar como real lo que no se mide | Conectar Jira/Git/incidentes tras el diagnóstico de 30 días |
 | ADR-020 | La suite completa se ejecuta también contra PostgreSQL real (embebido con `pgserver` en local; servicio en CI) | Cerrar la brecha "solo probado con SQLite" | Añadir pruebas de concurrencia sobre la cadena de auditoría |
 | ADR-021 | Dockerfile, Compose y CI se entregan como código validado sintácticamente, **sin** haberse construido ni ejecutado | No hubo demonio de Docker ni runner de GitHub en el entorno | Primera ejecución real en CI |
+| ADR-022 | El proyecto soporta **Python 3.10+** (no solo 3.11): sin `datetime.UTC`, sin constantes HTTP recientes, `resource` opcional y carpeta de SQLite creada al arrancar | Un usuario real ejecutó en Windows con Python 3.10 y el proyecto fallaba al importar | En Windows el sandbox pierde los límites de recursos (documentado); probado en 3.10 y 3.11 en Linux, **no** en un Windows real |
 

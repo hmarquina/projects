@@ -24,7 +24,7 @@ services:
       AI_PROVIDER: mock
       PIPELINE_DEPENDENCY_AUDIT: ${PIPELINE_DEPENDENCY_AUDIT:-true}
     ports:
-      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:${APP_PORT:-8765}:8000"   # puerto del host configurable; 8000 es el interno del contenedor
     command: ["sh", "-c", "python -m app.seed && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
 volumes:
   pgdata:

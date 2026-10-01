@@ -52,7 +52,7 @@ def _app_source(spec: dict[str, Any]) -> str:
         item = {{
             "id": str(uuid.uuid4()),
             "status": "registered",
-            "created_at": datetime.now(UTC),
+            "created_at": datetime.now(timezone.utc),
             "created_by": who[0],
             "description": body.description,
         }}
@@ -107,7 +107,7 @@ from __future__ import annotations
 
 import logging
 import uuid
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from os import environ
 from typing import Any
 

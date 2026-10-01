@@ -98,7 +98,7 @@ jobs:
         run: |
           export JWT_SECRET="$(python -c 'import secrets; print(secrets.token_hex(32))')"
           export DEMO_PASSWORD="$(python -c 'import secrets; print(secrets.token_urlsafe(18))')"
-          cd backend && python -m app.seed && (uvicorn app.main:app --port 8000 &) && sleep 4 && cd ../frontend
+          cd backend && python -m app.seed && (python -m app &) && sleep 4 && cd ../frontend
           node e2e/demo.mjs
       - uses: actions/upload-artifact@v4
         if: always()

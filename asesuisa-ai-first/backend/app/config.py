@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     jwt_ttl_minutes: int = 60
     demo_password: str = Field(default="", repr=False)
     ai_provider: str = "mock"
+    # Servidor local (`python -m app`). 8765 evita el choque habitual con el 8000.
+    app_host: str = "127.0.0.1"
+    app_port: int = Field(default=8765, ge=1, le=65535)
     pipeline_dependency_audit: bool = True
     pipeline_timeout_seconds: int = 90
 

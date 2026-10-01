@@ -1,11 +1,11 @@
 // E2E del flujo completo en un navegador real, contra el backend real (UI compilada servida por FastAPI).
-// Uso: DEMO_PASSWORD=... CHROMIUM_PATH=/ruta/a/chrome node e2e/demo.mjs   (BASE_URL por defecto: http://127.0.0.1:8000)
+// Uso: DEMO_PASSWORD=... CHROMIUM_PATH=/ruta/a/chrome node e2e/demo.mjs   (BASE_URL por defecto: http://127.0.0.1:8765)
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
 import { chromium } from "playwright-core";
 
-const BASE = process.env.BASE_URL ?? "http://127.0.0.1:8000";
+const BASE = process.env.BASE_URL ?? "http://127.0.0.1:8765";
 const PASSWORD = process.env.DEMO_PASSWORD;
 const OUT = process.env.E2E_OUT ?? "e2e/screenshots";
 if (!PASSWORD) throw new Error("Defina DEMO_PASSWORD");

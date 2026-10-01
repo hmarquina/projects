@@ -16,7 +16,7 @@ Proveedor por defecto: **mock determinista offline** (`AI_PROVIDER=mock`). Persi
 - Pipeline: `PIPELINE_DEPENDENCY_AUDIT=false` desactiva pip-audit (queda `skipped`, no `passed`)
 - Evaluación de IA (gate): `python -m app.ai.evaluation` (exit 1 si falla un umbral)
 - Usuarios demo: `DEMO_PASSWORD=<12+ chars> python -m app.seed`
-- Servidor: `JWT_SECRET=<32+ chars> uvicorn app.main:app --reload`
+- Servidor: `JWT_SECRET=<32+ chars> python -m app` (puerto por `APP_PORT`, por defecto 8765) o `uvicorn app.main:app --reload --port <puerto>`
 - Toda la suite contra PostgreSQL real (embebido; opcional): `pip install -r requirements-pgtest.txt && python scripts/test_postgres.py` (desde `asesuisa-ai-first/`)
 - Coherencia docs/código y permisos UI: `python scripts/check_docs.py` · `python scripts/check_ui_permissions.py`
 

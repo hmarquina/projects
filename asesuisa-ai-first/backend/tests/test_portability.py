@@ -2,6 +2,7 @@
 
 import ast
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -74,3 +75,11 @@ def test_sqlite_creates_missing_data_directory(tmp_path: Path) -> None:
     with engine.connect():
         pass
     assert db_file.parent.is_dir()
+
+
+def test_child_processes_use_an_absolute_python_path() -> None:
+    """Con un `sys.executable` relativo, el sandbox (que cambia de cwd) fallaba con FileNotFoundError."""
+    expected = os.path.normpath(os.path.join(os.getcwd(), "../.venv/bin/python"))
+    assert sandbox.absolute_python("../.venv/bin/python") == expected
+    assert Path(sandbox.PYTHON).is_absolute()
+    assert Path(sandbox.PYTHON).exists()

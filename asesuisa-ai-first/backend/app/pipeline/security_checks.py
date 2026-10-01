@@ -5,12 +5,11 @@ import re
 
 # invocación controlada de herramientas propias, sin shell
 import subprocess  # nosec B404
-import sys
 import tempfile
 from pathlib import Path
 from typing import Any
 
-from app.pipeline.sandbox import materialize
+from app.pipeline.sandbox import PYTHON, materialize
 
 DEP_ALLOWLIST = frozenset({"fastapi", "pydantic", "pyjwt", "httpx", "pytest"})
 _SECRET_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -38,7 +37,7 @@ def run_bandit(files: dict[str, str], timeout: int = 60) -> dict[str, Any]:
     with tempfile.TemporaryDirectory(prefix="bandit-") as tmp:
         root = Path(tmp)
         materialize(root, {k: v for k, v in files.items() if k.endswith(".py")})
-        cmd = [sys.executable, "-m", "bandit", "-r", str(root), "-f", "json", "-q"]
+        cmd = [PYTHON, "-m", "bandit", "-r", str(root), "-f", "json", "-q"]
         try:
             proc = subprocess.run(  # noqa: S603  # nosec B603
                 cmd, capture_output=True, text=True, timeout=timeout, cwd=tmp
@@ -75,7 +74,7 @@ def check_dependencies(requirements: str, audit: bool, timeout: int = 120) -> di
         req = Path(tmp) / "requirements.txt"
         req.write_text(requirements, encoding="utf-8")
         cmd = [
-            sys.executable,
+            PYTHON,
             "-m",
             "pip_audit",
             "-r",

@@ -23,6 +23,14 @@ except ImportError:  # pragma: no cover - solo en Windows
 
 _HAS_RLIMIT = resource is not None
 
+
+def absolute_python(executable: str) -> str:
+    """`sys.executable` puede ser relativo (p. ej. `../.venv/bin/python`); los hijos corren en otro cwd."""
+    return os.path.abspath(executable)
+
+
+PYTHON = absolute_python(sys.executable)  # se fija al importar, con el cwd de arranque
+
 # Harness inyectado por la plataforma (no forma parte del código generado ni pasa por la política).
 _HARNESS = """import json
 import os
@@ -83,7 +91,7 @@ def run_tests(files: dict[str, str], timeout: int = 90) -> dict[str, Any]:
         (root / "conftest.py").write_text(_HARNESS, encoding="utf-8")
         results = root / "results.json"
         env = build_env(tmp, results)
-        cmd = [sys.executable, "-I", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider",
+        cmd = [PYTHON, "-I", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider",
                "--tb=short"]  # fmt: skip
         try:
             proc = subprocess.run(  # noqa: S603  # nosec B603

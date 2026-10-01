@@ -42,7 +42,7 @@ python -m venv .venv && . .venv/bin/activate && pip install -r backend/requireme
 npm --prefix frontend ci && npm --prefix frontend run build
 export DATABASE_URL=sqlite:///./data/demo.db JWT_SECRET="$(python -c 'import secrets; print(secrets.token_hex(32))')"
 export DEMO_PASSWORD="una-contraseña-de-12+" PIPELINE_DEPENDENCY_AUDIT=false
-mkdir -p backend/data && cd backend && python -m app.seed && uvicorn app.main:app --port 8000   # → http://127.0.0.1:8000
+mkdir -p backend/data && cd backend && python -m app.seed && python -m app   # → http://127.0.0.1:8765  (otro puerto: APP_PORT=9000)
 ```
 
 ## Verificar por tu cuenta

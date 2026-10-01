@@ -35,6 +35,34 @@ _REGISTRY: dict[str, PromptTemplate] = {
             "pregunta de aclaración para cada una. " + _SYSTEM_RULES
         ),
     ),
+    "user_stories": PromptTemplate(
+        id="user_stories",
+        version="1.0.0",
+        system="Extrae historias de usuario (Como/Quiero/Para) y requisitos del sistema, cada una con cita literal. "
+        + _SYSTEM_RULES,
+    ),
+    "acceptance_criteria": PromptTemplate(
+        id="acceptance_criteria",
+        version="1.0.0",
+        system="Genera criterios de aceptación Given/When/Then medibles; no inventes cifras. "
+        + _SYSTEM_RULES,
+    ),
+    "risk_assessment": PromptTemplate(
+        id="risk_assessment",
+        version="1.0.0",
+        system="Identifica riesgos con probabilidad, impacto, controles y evidencia literal. "
+        + _SYSTEM_RULES,
+    ),
+    "architecture_proposal": PromptTemplate(
+        id="architecture_proposal",
+        version="1.0.0",
+        system="Propone componentes, relaciones y decisiones, agnóstico de nube. " + _SYSTEM_RULES,
+    ),
+    "api_contract": PromptTemplate(
+        id="api_contract",
+        version="1.0.0",
+        system="Genera un contrato OpenAPI 3.1 con seguridad y errores definidos. " + _SYSTEM_RULES,
+    ),
 }
 
 

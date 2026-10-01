@@ -42,8 +42,28 @@ class Analysis(Base):
     model: Mapped[str] = mapped_column(String(64))
     score: Mapped[int] = mapped_column(Integer)
     result_json: Mapped[str] = mapped_column(Text)
+    input_ref: Mapped[str] = mapped_column(String(128), default="")
     pii_redactions: Mapped[str] = mapped_column(String(200), default="")
     injection_flags: Mapped[int] = mapped_column(Integer, default=0)
+    created_by: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class Artifact(Base):
+    """Artefacto generado por IA. Nace en `draft`: requiere revisión humana (Fase 4)."""
+
+    __tablename__ = "artifacts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    initiative_id: Mapped[int] = mapped_column(Integer, index=True)
+    kind: Mapped[str] = mapped_column(String(32), index=True)
+    version: Mapped[int] = mapped_column(Integer)
+    status: Mapped[str] = mapped_column(String(16), default="draft")
+    requirement_ref: Mapped[str] = mapped_column(String(128))
+    analysis_id: Mapped[int] = mapped_column(Integer)
+    prompt_label: Mapped[str] = mapped_column(String(96))
+    model: Mapped[str] = mapped_column(String(64))
+    content_json: Mapped[str] = mapped_column(Text)
     created_by: Mapped[str] = mapped_column(String(64))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
@@ -69,4 +89,4 @@ class AuditEvent(Base):
     hash: Mapped[str] = mapped_column(String(64), default="")
 
 
-__all__ = ["Analysis", "AuditEvent", "Initiative", "User"]
+__all__ = ["Analysis", "Artifact", "AuditEvent", "Initiative", "User"]

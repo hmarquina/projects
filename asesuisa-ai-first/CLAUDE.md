@@ -37,3 +37,10 @@ registrar supuestos (`ASSUMPTION`) y decisiones (ADR) · cambios reproducibles.
 1. Tests nuevos y existentes en verde. 2. `ruff`, `mypy`, `bandit` sin hallazgos.
 3. Endpoints con RBAC + auditoría + validación. 4. Sin secretos ni datos reales.
 5. Docs/ADR actualizados. 6. Verificado ejecutando, no solo leyendo el código.
+
+## Diagramas (skill Archify, en `.claude/skills/archify`)
+- Fuente: `docs/diagrams/*.json` → salida HTML interactivo junto a ella.
+- Generar y validar (4 gates; el último abre un navegador real):
+  `ARCHIFY_UPDATE_CHECK_DISABLED=1 ARCHIFY_CHROME=/opt/pw-browsers/chromium-1194/chrome-linux/chrome node ../.claude/skills/archify/bin/archify.mjs finalize architecture docs/diagrams/<x>.json docs/diagrams/<x>.html --quality showcase --json`
+- Revisar el render con `visual-check --summary --out-dir <dir>` antes de afirmar calidad visual.
+- Los diagramas deben reflejar lo construido; lo pendiente se rotula como pendiente.

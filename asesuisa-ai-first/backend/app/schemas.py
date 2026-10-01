@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -67,5 +68,25 @@ class AnalysisOut(BaseModel):
     pii_redactions: dict[str, int]
     injection_flags: int
     result: RequirementAnalysis
+    created_by: str
+    created_at: datetime
+
+
+class InitiativeUpdate(BaseModel):
+    title: str | None = Field(default=None, min_length=3, max_length=200)
+    description: str | None = Field(default=None, max_length=10_000)
+
+
+class ArtifactOut(BaseModel):
+    id: int
+    initiative_id: int
+    kind: str
+    version: int
+    status: str
+    prompt_label: str
+    model: str
+    analysis_id: int
+    requirement_ref: str
+    content: dict[str, Any]
     created_by: str
     created_at: datetime

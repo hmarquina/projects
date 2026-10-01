@@ -127,3 +127,8 @@ def analyze(text: str) -> RequirementAnalysis:
         ambiguities=ambiguities,
         missing=[_QUESTIONS[k] for k in _QUESTIONS if raw[k] == 0],
     )
+
+
+# Alias públicos para los generadores de artefactos.
+ACTOR_RE, OBLIGATION_RE, MEASURABLE_RE = _ACTOR, _OBLIGATION, _MEASURABLE
+NFR_PATTERNS = _NFR

@@ -23,8 +23,10 @@ ROLES = ("viewer", "analyst", "tech_lead", "security", "approver", "admin")
 # Segregación de funciones: quien genera artefactos no aprueba; quien aprueba no genera.
 PERMISSIONS: dict[str, frozenset[str]] = {
     "viewer": frozenset({"initiative:read"}),
-    "analyst": frozenset({"initiative:read", "initiative:create", "ai:analyze"}),
-    "tech_lead": frozenset({"initiative:read", "ai:analyze", "pipeline:run"}),
+    "analyst": frozenset(
+        {"initiative:read", "initiative:create", "initiative:update", "ai:analyze", "ai:generate"}
+    ),
+    "tech_lead": frozenset({"initiative:read", "ai:analyze", "ai:generate", "pipeline:run"}),
     "security": frozenset({"initiative:read", "security:review", "audit:read"}),
     "approver": frozenset({"initiative:read", "release:approve", "audit:read"}),
     "admin": frozenset({"initiative:read", "audit:read", "user:manage"}),

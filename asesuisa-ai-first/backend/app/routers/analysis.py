@@ -65,6 +65,7 @@ def analyze_requirement(
         prompt_label=res.prompt_label,
         model=res.model,
         score=res.output.score,
+        input_ref=audit.content_ref(item.description),
         result_json=res.output.model_dump_json(),
         pii_redactions=json.dumps(res.redactions),
         injection_flags=res.injection_flags,

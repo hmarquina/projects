@@ -8,7 +8,7 @@ from app import audit
 from app.ai.guardrails import find_pii
 from app.db import get_db
 from app.models import Initiative
-from app.schemas import InitiativeCreate, InitiativeOut
+from app.schemas import InitiativeCreate, InitiativeOut, InitiativeUpdate
 from app.security import Principal, require
 
 router = APIRouter(prefix="/initiatives", tags=["initiatives"])
@@ -53,4 +53,31 @@ def get_initiative(
     item = db.get(Initiative, initiative_id)
     if item is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Iniciativa no encontrada")
+    return item
+
+
+@router.patch("/{initiative_id}", response_model=InitiativeOut)
+def update_initiative(
+    initiative_id: int,
+    body: InitiativeUpdate,
+    db: Annotated[Session, Depends(get_db)],
+    who: Annotated[Principal, Depends(require("initiative:update"))],
+) -> Initiative:
+    item = db.get(Initiative, initiative_id)
+    if item is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Iniciativa no encontrada")
+    title = body.title if body.title is not None else item.title
+    description = body.description if body.description is not None else item.description
+    if find_pii(title + "\n" + description):
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            "El texto contiene datos personales; use datos sintéticos o enmascarados",
+        )
+    item.title, item.description, item.status = title, description, "registered"
+    db.commit()
+    audit.record(
+        db, user=who.username, role=who.role, action="initiative.update",
+        input_ref=audit.content_ref(title + description),
+        resulting_artifact=f"initiative:{item.id}",
+    )  # fmt: skip
     return item

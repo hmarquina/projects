@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.db import Base, engine
-from app.routers import analysis, audit, auth, initiatives
+from app.routers import analysis, artifacts, audit, auth, initiatives
 
 
 @asynccontextmanager
@@ -17,6 +17,7 @@ app = FastAPI(title="AI Engineering Control Tower", version="0.1.0", lifespan=li
 app.include_router(auth.router)
 app.include_router(initiatives.router)
 app.include_router(analysis.router)
+app.include_router(artifacts.router)
 app.include_router(audit.router)
 
 

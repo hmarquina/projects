@@ -92,7 +92,7 @@ def test_secret_scanner_detects_literals(content: str) -> None:
     assert res["ok"] is False and res["findings"]
 
 
-def test_generated_service_env_sourcedironment() -> None:
+def test_generated_service_reads_secret_from_environment() -> None:
     res = security_checks.scan_secrets(_files())
     assert res["ok"] and res["env_sourced"]
 

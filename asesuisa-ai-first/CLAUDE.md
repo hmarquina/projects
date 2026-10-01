@@ -17,6 +17,14 @@ Proveedor por defecto: **mock determinista offline** (`AI_PROVIDER=mock`). Persi
 - Evaluación de IA (gate): `python -m app.ai.evaluation` (exit 1 si falla un umbral)
 - Usuarios demo: `DEMO_PASSWORD=<12+ chars> python -m app.seed`
 - Servidor: `JWT_SECRET=<32+ chars> uvicorn app.main:app --reload`
+- Toda la suite contra PostgreSQL real (embebido): `python scripts/test_postgres.py` (desde `asesuisa-ai-first/`)
+- Coherencia docs/código y permisos UI: `python scripts/check_docs.py` · `python scripts/check_ui_permissions.py`
+
+## Frontend (desde `frontend/`)
+- `npm ci` · `npm run typecheck` · `npm test` · `npm run build` (la UI compilada la sirve el backend en `/`)
+- E2E en navegador real (backend arriba con `DEMO_PASSWORD` y `PIPELINE_DEPENDENCY_AUDIT=false`):
+  `CHROMIUM_PATH=<chrome> DEMO_PASSWORD=<la misma> node e2e/demo.mjs`
+- Trampa conocida: en Vitest un `beforeEach` que **devuelve** una función la ejecuta como limpieza; usar llaves.
 
 ## Convenciones
 - Python 3.11, typing estricto (mypy strict), Pydantic para validar toda entrada.

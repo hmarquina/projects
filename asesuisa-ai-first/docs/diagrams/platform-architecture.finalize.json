@@ -5,16 +5,16 @@
   "status": "pass",
   "type": "architecture",
   "quality": "showcase",
-  "startedAt": "2026-10-01T18:46:22.276Z",
+  "startedAt": "2026-10-01T19:21:59.432Z",
   "specification": {
     "path": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.json",
-    "sha256": "1c4926bc55330d21df1336005dc6a73f4d20d73c6a0eb975270e7ceb0bbb31b5",
-    "bytes": 6117
+    "sha256": "6521dd73aeefba10f8c981c316cf4d3e879e3720b5e687d3d6e48a0988b9731f",
+    "bytes": 6221
   },
   "artifact": {
     "path": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.html",
-    "sha256": "2871451c147053c06a38d8f04eaf0a7946a2cfc324490e3871202231ca4e7c93",
-    "bytes": 768249
+    "sha256": "825fd03e629a9790fd7566431e7da18e582002ecd1bf981a5a9ad6ffab0a79ab",
+    "bytes": 768246
   },
   "stages": {
     "validate": {
@@ -38,8 +38,8 @@
         "ok": true,
         "command": "validate",
         "specification": {
-          "sha256": "1c4926bc55330d21df1336005dc6a73f4d20d73c6a0eb975270e7ceb0bbb31b5",
-          "bytes": 6117
+          "sha256": "6521dd73aeefba10f8c981c316cf4d3e879e3720b5e687d3d6e48a0988b9731f",
+          "bytes": 6221
         },
         "validation": {
           "checksPassed": 9,
@@ -54,7 +54,7 @@
     "deliver": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 493,
+      "durationMs": 567,
       "command": [
         "/opt/node22/bin/node",
         "/home/user/projects/.claude/skills/archify/bin/archify.mjs",
@@ -68,19 +68,19 @@
       ],
       "receipt": {
         "schemaVersion": 1,
-        "receiptId": "7b100bae-4391-4312-a140-97fa238d84e7",
+        "receiptId": "b3d81fe5-e0f1-47dc-8f96-c339c1707125",
         "ok": true,
         "command": "deliver",
         "type": "architecture",
         "input": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.json",
         "output": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.html",
         "specification": {
-          "sha256": "1c4926bc55330d21df1336005dc6a73f4d20d73c6a0eb975270e7ceb0bbb31b5",
-          "bytes": 6117
+          "sha256": "6521dd73aeefba10f8c981c316cf4d3e879e3720b5e687d3d6e48a0988b9731f",
+          "bytes": 6221
         },
         "artifact": {
-          "sha256": "2871451c147053c06a38d8f04eaf0a7946a2cfc324490e3871202231ca4e7c93",
-          "bytes": 768249
+          "sha256": "825fd03e629a9790fd7566431e7da18e582002ecd1bf981a5a9ad6ffab0a79ab",
+          "bytes": 768246
         },
         "validation": {
           "checksPassed": 9,
@@ -106,7 +106,7 @@
     "check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 185,
+      "durationMs": 210,
       "command": [
         "/opt/node22/bin/node",
         "/home/user/projects/.claude/skills/archify/bin/archify.mjs",
@@ -118,8 +118,8 @@
         "ok": true,
         "file": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.html",
         "artifact": {
-          "sha256": "2871451c147053c06a38d8f04eaf0a7946a2cfc324490e3871202231ca4e7c93",
-          "bytes": 768249
+          "sha256": "825fd03e629a9790fd7566431e7da18e582002ecd1bf981a5a9ad6ffab0a79ab",
+          "bytes": 768246
         },
         "checks": [
           {
@@ -247,13 +247,13 @@
           "issues": []
         },
         "provenance": "current",
-        "deliveryReceiptId": "7b100bae-4391-4312-a140-97fa238d84e7"
+        "deliveryReceiptId": "b3d81fe5-e0f1-47dc-8f96-c339c1707125"
       }
     },
     "browser-check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 2257,
+      "durationMs": 2749,
       "command": [
         "/opt/node22/bin/node",
         "/home/user/projects/.claude/skills/archify/bin/archify.mjs",
@@ -271,11 +271,11 @@
         "status": "pass",
         "visualReview": "not-requested",
         "provenance": "current",
-        "deliveryReceiptId": "7b100bae-4391-4312-a140-97fa238d84e7",
+        "deliveryReceiptId": "b3d81fe5-e0f1-47dc-8f96-c339c1707125",
         "artifact": {
           "path": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.html",
-          "sha256": "2871451c147053c06a38d8f04eaf0a7946a2cfc324490e3871202231ca4e7c93",
-          "bytes": 768249
+          "sha256": "825fd03e629a9790fd7566431e7da18e582002ecd1bf981a5a9ad6ffab0a79ab",
+          "bytes": 768246
         },
         "state": {
           "detail": "read",
@@ -993,8 +993,8 @@
     "browserCheckReceipt": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.browser-check.json"
   },
   "visualReview": "not-requested",
-  "finishedAt": "2026-10-01T18:46:25.322Z",
-  "durationMs": 3046,
+  "finishedAt": "2026-10-01T19:22:03.105Z",
+  "durationMs": 3673,
   "update": {
     "status": "unavailable",
     "installedVersion": null,

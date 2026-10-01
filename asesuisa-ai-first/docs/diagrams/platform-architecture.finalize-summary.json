@@ -7,13 +7,13 @@
   "quality": "showcase",
   "specification": {
     "path": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.json",
-    "sha256": "1c4926bc55330d21df1336005dc6a73f4d20d73c6a0eb975270e7ceb0bbb31b5",
-    "bytes": 6117
+    "sha256": "6521dd73aeefba10f8c981c316cf4d3e879e3720b5e687d3d6e48a0988b9731f",
+    "bytes": 6221
   },
   "artifact": {
     "path": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.html",
-    "sha256": "2871451c147053c06a38d8f04eaf0a7946a2cfc324490e3871202231ca4e7c93",
-    "bytes": 768249
+    "sha256": "825fd03e629a9790fd7566431e7da18e582002ecd1bf981a5a9ad6ffab0a79ab",
+    "bytes": 768246
   },
   "gates": {
     "validate": "pass",
@@ -44,5 +44,5 @@
     "reason": "disabled"
   },
   "visualReview": "not-requested",
-  "durationMs": 3046
+  "durationMs": 3673
 }

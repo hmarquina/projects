@@ -16,6 +16,8 @@ ignore = ["S101"]
 "app/ai/prompts.py" = ["E501"]
 "app/pipeline/*.py" = ["E501"]
 "app/routers/pipeline.py" = ["E501"]
+"app/productivity.py" = ["E501"]
+"app/routers/metrics.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.11"

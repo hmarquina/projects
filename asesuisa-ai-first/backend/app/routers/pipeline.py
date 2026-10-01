@@ -9,7 +9,7 @@ import json
 from datetime import UTC, datetime
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -41,6 +41,7 @@ class PipelineRunOut(BaseModel):
     readiness: dict[str, Any]
     traceability: list[dict[str, Any]]
     files: dict[str, str]
+    evidence: dict[str, Any]
     evidence_ref: str
     created_by: str
     created_at: datetime
@@ -67,6 +68,7 @@ def _run_out(db: Session, row: PipelineRun) -> PipelineRunOut:
         id=row.id, initiative_id=row.initiative_id, status=row.status,
         steps=json.loads(row.steps_json), readiness=json.loads(row.readiness_json),
         traceability=json.loads(row.traceability_json), files=json.loads(row.file_hashes_json),
+        evidence=json.loads(row.evidence_json),
         evidence_ref=row.evidence_ref, created_by=row.created_by, created_at=row.created_at,
         approval=None if appr is None else {
             "decision": appr.decision, "approver": appr.approver, "comment": appr.comment,
@@ -158,6 +160,21 @@ def list_runs(
         .order_by(PipelineRun.id)
     )
     return [_run_out(db, r) for r in rows]
+
+
+@router.get("/pipeline-runs", response_model=list[PipelineRunOut])
+def list_all_runs(
+    db: Annotated[Session, Depends(get_db)],
+    _: Annotated[Principal, Depends(require("initiative:read"))],
+    status_filter: Annotated[
+        Literal["blocked", "awaiting_approval", "approved", "rejected"] | None,
+        Query(alias="status"),
+    ] = None,
+) -> list[PipelineRunOut]:
+    query = select(PipelineRun).order_by(PipelineRun.id.desc())
+    if status_filter:
+        query = query.where(PipelineRun.status == status_filter)
+    return [_run_out(db, r) for r in db.scalars(query)]
 
 
 @router.get("/pipeline-runs/{run_id}", response_model=PipelineRunOut)
@@ -273,6 +290,14 @@ def create_release(
         output_ref=f"sha256:{pkg_hash[:32]}", resulting_artifact=f"release:{rel.id}",
     )  # fmt: skip
     return _release_out(rel)
+
+
+@router.get("/releases", response_model=list[ReleaseOut])
+def list_releases(
+    db: Annotated[Session, Depends(get_db)],
+    _: Annotated[Principal, Depends(require("initiative:read"))],
+) -> list[ReleaseOut]:
+    return [_release_out(r) for r in db.scalars(select(Release).order_by(Release.id.desc()))]
 
 
 @router.get("/releases/{release_id}", response_model=ReleaseOut)

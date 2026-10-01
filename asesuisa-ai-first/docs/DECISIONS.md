@@ -18,4 +18,9 @@
 | ADR-014 | Aprobación humana con segregación de funciones: quien ejecuta no aprueba; el aprobador no puede haber creado iniciativa, análisis, artefactos ni ejecución; aprobar exige reconocer riesgos | Ninguna salida de IA se aprueba a sí misma | Doble aprobación sobre umbral de riesgo |
 | ADR-015 | Release reproducible: zip determinista, manifest con hash por archivo, verificación de integridad antes de empaquetar, hash del paquete auditado | Evidencia verificable por terceros (`sha256sum`) | Firma digital del paquete |
 | ADR-016 | README del servicio por plantilla determinista, no generado por IA | Los hechos (rutas, criterios, cobertura) no deben alucinarse | — |
+| ADR-017 | La UI compilada se sirve desde el propio backend (misma procedencia, sin CORS); el token vive solo en memoria (sin `localStorage`) | Superficie menor y menos exposición de credenciales | Recargar la página cierra la sesión; en producción, OIDC con cookies seguras |
+| ADR-018 | La UI replica la tabla de permisos del backend solo para ocultar acciones; el backend decide. `scripts/check_ui_permissions.py` impide que se desvíen | UX coherente sin duplicar la autoridad | — |
+| ADR-019 | Las métricas organizacionales muestran `sin dato`; solo se miden las de uso de la plataforma | No presentar como real lo que no se mide | Conectar Jira/Git/incidentes tras el diagnóstico de 30 días |
+| ADR-020 | La suite completa se ejecuta también contra PostgreSQL real (embebido con `pgserver` en local; servicio en CI) | Cerrar la brecha "solo probado con SQLite" | Añadir pruebas de concurrencia sobre la cadena de auditoría |
+| ADR-021 | Dockerfile, Compose y CI se entregan como código validado sintácticamente, **sin** haberse construido ni ejecutado | No hubo demonio de Docker ni runner de GitHub en el entorno | Primera ejecución real en CI |
 

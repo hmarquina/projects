@@ -122,7 +122,7 @@ def run(db: Session, gateway: ModelGateway, inp: Inputs, run_by: str) -> Outcome
     secrets: dict[str, Any] = security_checks.scan_secrets(files) if files else {"ok": False, "findings": [],
                                                                  "env_sourced": False}  # fmt: skip
     steps.append(_step("escaneo_secretos", "passed" if secrets["ok"] else "failed",
-                       f"hallazgos={len(secrets['findings'])} credencial_desde_entorno={secrets['env_sourced']}",
+                       f"hallazgos={len(secrets['findings'])} · secreto leído de entorno: {'sí' if secrets['env_sourced'] else 'no'}",
                        True, t))  # fmt: skip
     t = time.perf_counter()
     deps: dict[str, Any] = security_checks.check_dependencies(files.get("requirements.txt", ""),

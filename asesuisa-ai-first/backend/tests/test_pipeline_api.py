@@ -260,3 +260,17 @@ def test_file_and_run_endpoints(client: TestClient, login) -> None:  # noqa: ANN
     assert client.get(f"/pipeline-runs/{run['id']}/files/nada.py", headers=v).status_code == 404
     assert client.get("/pipeline-runs/999", headers=v).status_code == 404
     assert client.get("/releases/999", headers=v).status_code == 404
+
+
+def test_global_listings_and_evidence(client: TestClient, login) -> None:  # noqa: ANN001
+    iid = ready_initiative(client, login)
+    run = run_pipeline(client, login, iid)
+    v = login("viewer")
+    assert run["evidence"]["tests"]["failed"] == 0 and "bandit" in run["evidence"]["security"]
+    assert [r["id"] for r in client.get("/pipeline-runs", headers=v).json()] == [run["id"]]
+    pending = client.get("/pipeline-runs?status=awaiting_approval", headers=v).json()
+    assert len(pending) == 1
+    assert client.get("/pipeline-runs?status=approved", headers=v).json() == []
+    assert client.get("/pipeline-runs?status=nope", headers=v).status_code == 422
+    assert client.get("/releases", headers=v).json() == []
+    assert client.get("/pipeline-runs").status_code == 401

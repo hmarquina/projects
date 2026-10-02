@@ -119,7 +119,7 @@ def plan(args: argparse.Namespace, npm: str | None) -> list[Step]:
             print(
                 "AVISO: no se encontro Node/npm. La API funcionara, pero sin interfaz. Instala Node 18+ o usa --no-ui."
             )
-        elif not (FRONTEND / "dist" / "index.html").exists():
+        elif args.rebuild_ui or not (FRONTEND / "dist" / "index.html").exists():
             steps.append(
                 (
                     "Instalar dependencias de la interfaz",
@@ -150,6 +150,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--port", type=int, default=int(os.environ.get("APP_PORT", DEFAULT_PORT)))
     parser.add_argument(
         "--no-ui", action="store_true", help="no compilar la interfaz (no requiere Node)"
+    )
+    parser.add_argument(
+        "--rebuild-ui", action="store_true", help="recompilar la interfaz aunque ya exista"
     )
     parser.add_argument(
         "--reset", action="store_true", help="borrar la base y las credenciales locales"
@@ -186,6 +189,8 @@ def main(argv: list[str] | None = None) -> int:
         ):
             (VENV / ".deps-stamp").write_text(requirements_hash(), encoding="utf-8")
 
+        if not args.no_ui and not args.dry_run and not (FRONTEND / "dist" / "index.html").exists():
+            print("\nAVISO: no existe frontend/dist/index.html; la pagina mostrara un aviso en vez de la UI.")
         url = f"http://127.0.0.1:{args.port}"
         print(f"\n== Control Tower en {url}")
         print(f"   Usuarios: {', '.join('demo_' + u for u in USERS)}")

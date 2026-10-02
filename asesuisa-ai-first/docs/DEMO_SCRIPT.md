@@ -5,6 +5,18 @@ Caso ficticio: **"Digitalización del proceso de reclamos"**. Todo el contenido 
 
 ## 0. Preparación (una sola vez)
 
+**Recomendado: un solo comando**, desde cualquier carpeta y en cualquier consola (PowerShell, CMD, Git Bash, Linux, macOS). Requiere Python 3.10+ (y Node 18+ para la interfaz):
+
+```bash
+python scripts/demo.py             # en Windows, si `python` no responde: py scripts/demo.py
+```
+
+Crea `.venv`, instala dependencias, compila la interfaz, siembra los usuarios y arranca en <http://127.0.0.1:8765>, e imprime la contraseña de los usuarios demo. Es **idempotente**: la segunda vez omite lo ya hecho y conserva la contraseña. Opciones: `--port 9000` (otro puerto), `--no-ui` (sin Node), `--reset` (borra la base y las credenciales y empieza de cero), `--dry-run` (muestra los pasos sin ejecutarlos). Las credenciales se guardan en `backend/data/demo.env` (ignorado por git).
+
+### Pasos manuales (solo si no quieres usar el lanzador)
+
+**Ejecuta todo desde la raíz del proyecto (`asesuisa-ai-first/`), no desde `backend/`.** Activar el entorno virtual depende de la consola: en Linux/macOS `. .venv/bin/activate`; en **Git Bash en Windows `source .venv/Scripts/activate`**; en PowerShell `.\.venv\Scripts\Activate.ps1`; en CMD `.venv\Scripts\activate.bat`.
+
 Requiere **Python 3.10+** y Node 18+. En Linux/macOS, desde `asesuisa-ai-first/`:
 
 ```bash
@@ -91,7 +103,9 @@ Usuarios: `demo_analyst`, `demo_tech_lead`, `demo_approver`, `demo_security`, `d
 | Login falla | `DEMO_PASSWORD` distinta a la usada en `app.seed` | Borrar `backend/data/demo.db` y repetir el seed |
 | Pipeline responde 409 "Falta el artefacto" | No se generaron los 5 artefactos o se editó el requerimiento después | Volver a analizar y generar |
 | Pipeline "bloqueado" | Un control funcionó | **Es parte de la demo**: lee el paso fallido en la tabla |
-| Pantalla vacía en el puerto del servidor | Falta compilar la UI | `npm --prefix frontend run build` |
+| Pantalla vacía en el puerto del servidor | Falta compilar la UI | `npm --prefix frontend run build` (o `python scripts/demo.py`) |
+| `.venv/bin/activate: No such file` en Windows | En Windows el entorno usa `Scripts`, no `bin` | `source .venv/Scripts/activate` (Git Bash) o usa `python scripts/demo.py` |
+| `No module named 'app'`, `requirements-dev.txt` o `frontend` no existen | Ejecutaste desde otra carpeta (p. ej. `backend/`) | Ejecuta desde `asesuisa-ai-first/`, o usa `python scripts/demo.py`, que funciona desde cualquier carpeta |
 
 ## Preguntas que la demo provoca
 Ver `QA.md`: #2 (¿duplicamos?), #8 (fuga de datos), #9 (código inseguro), #11 (dónde se ejecuta el código), #12 (quién responde).

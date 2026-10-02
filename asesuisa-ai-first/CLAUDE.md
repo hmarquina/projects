@@ -8,6 +8,9 @@ Todos los datos son **sintéticos**. Las cifras del caso son supuestos, no métr
 Proveedor por defecto: **mock determinista offline** (`AI_PROVIDER=mock`). Persistencia: SQLAlchemy
 (SQLite en local/tests, PostgreSQL vía `DATABASE_URL`). Decisiones en `docs/DECISIONS.md`.
 
+## Arranque de la demo (cualquier carpeta y consola)
+- `python scripts/demo.py` (`--port`, `--no-ui`, `--reset`, `--dry-run`). Solo caracteres imprimibles en cp1252 (hay un test).
+
 ## Comandos (desde `backend/`, con `.venv` activado)
 - Instalar: `pip install -r requirements-dev.txt`
 - Tests: `python -m pytest -q`

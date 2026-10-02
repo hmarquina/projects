@@ -33,17 +33,13 @@ dependencias → evidencia y readiness → **aprobación humana segregada** → 
 
 ## Arranque rápido
 
-Requiere **Python 3.10 o superior** y Node 18+. Probado en Python 3.10 y 3.11 (Linux). **Windows:** instrucciones en PowerShell en [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md); no se ha ejecutado en un Windows real.
-
-Ver el detalle y la guía de la demo en [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). Resumen:
+Requiere **Python 3.10 o superior** y, para la interfaz, Node 18+. **Un solo comando**, desde cualquier carpeta y en cualquier consola (PowerShell, CMD, Git Bash, Linux, macOS):
 
 ```bash
-python -m venv .venv && . .venv/bin/activate && pip install -r backend/requirements-dev.txt
-npm --prefix frontend ci && npm --prefix frontend run build
-export DATABASE_URL=sqlite:///./data/demo.db JWT_SECRET="$(python -c 'import secrets; print(secrets.token_hex(32))')"
-export DEMO_PASSWORD="una-contraseña-de-12+" PIPELINE_DEPENDENCY_AUDIT=false
-mkdir -p backend/data && cd backend && python -m app.seed && python -m app   # → http://127.0.0.1:8765  (otro puerto: APP_PORT=9000)
+python scripts/demo.py            # en Windows, si `python` no responde: py scripts/demo.py
 ```
+
+Crea el entorno virtual, instala dependencias, compila la interfaz, siembra los usuarios demo y arranca en **http://127.0.0.1:8765**. Imprime la contraseña (la misma para todos los usuarios demo). Opciones: `--port 9000`, `--no-ui` (sin Node), `--reset` (empezar de cero), `--dry-run`. La guía de la demo y los pasos manuales están en [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). Probado en Linux con Python 3.10 y 3.11; **no se ha ejecutado en un Windows real**.
 
 ## Verificar por tu cuenta
 

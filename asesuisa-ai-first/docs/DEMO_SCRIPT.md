@@ -103,7 +103,7 @@ Usuarios: `demo_analyst`, `demo_tech_lead`, `demo_approver`, `demo_security`, `d
 | Login falla | `DEMO_PASSWORD` distinta a la usada en `app.seed` | Borrar `backend/data/demo.db` y repetir el seed |
 | Pipeline responde 409 "Falta el artefacto" | No se generaron los 5 artefactos o se editó el requerimiento después | Volver a analizar y generar |
 | Pipeline "bloqueado" | Un control funcionó | **Es parte de la demo**: lee el paso fallido en la tabla |
-| Pantalla vacía en el puerto del servidor | Falta compilar la UI | `npm --prefix frontend run build` (o `python scripts/demo.py`) |
+| Pantalla vacía en el puerto del servidor | Falta compilar la UI (ahora la página lo avisa con un 503) o el navegador bloquea el JS por tipo MIME | `python scripts/demo.py --rebuild-ui`; F12 → Consola/Red para ver el error. El servidor ya fija `.js` como `text/javascript` |
 | `.venv/bin/activate: No such file` en Windows | En Windows el entorno usa `Scripts`, no `bin` | `source .venv/Scripts/activate` (Git Bash) o usa `python scripts/demo.py` |
 | `No module named 'app'`, `requirements-dev.txt` o `frontend` no existen | Ejecutaste desde otra carpeta (p. ej. `backend/`) | Ejecuta desde `asesuisa-ai-first/`, o usa `python scripts/demo.py`, que funciona desde cualquier carpeta |
 

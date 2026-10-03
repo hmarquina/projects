@@ -47,12 +47,12 @@ export default function Development({ ctx }: { ctx: Ctx }) {
             </div>
             <div className="table-wrap">
               <table>
-                <thead><tr><th>Paso</th><th>Estado</th><th>¿Bloqueante?</th><th>Detalle</th><th>ms</th></tr></thead>
+                <thead><tr><th>Paso</th><th>Estado</th><th title="Un paso bloqueante frena la ejecución solo si falla. 'Sin verificar' no bloquea: resta puntos al readiness y queda como riesgo residual.">¿Compuerta?</th><th>Detalle</th><th>ms</th></tr></thead>
                 <tbody>
                   {run.steps.map((s) => (
                     <tr key={s.name}>
                       <td className="mono">{s.name}</td><td><Badge status={s.status} /></td>
-                      <td>{s.blocking ? "sí" : "no"}</td><td>{s.detail}</td><td>{s.duration_ms}</td>
+                      <td>{s.blocking ? (s.status === "skipped" ? "sí · sin verificar (no bloquea)" : "sí") : "no"}</td><td>{s.detail}</td><td>{s.duration_ms}</td>
                     </tr>
                   ))}
                 </tbody>

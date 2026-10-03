@@ -32,6 +32,19 @@ def traceability(
     return rows
 
 
+# Puntos maximos por componente (suman 100). La UI los muestra en el desglose del bloqueo.
+MAXIMUMS: dict[str, int] = {
+    "calidad_requerimiento": 20,
+    "pruebas": 25,
+    "sast": 10,
+    "secretos": 7,
+    "dependencias": 8,
+    "trazabilidad": 15,
+    "documentacion": 5,
+    "evidencia_completa": 10,
+}
+
+
 def readiness(
     *, analysis_score: int, tests: list[dict[str, Any]], bandit: dict[str, Any],
     secrets: dict[str, Any], deps: dict[str, Any], trace: list[dict[str, Any]],
@@ -40,14 +53,18 @@ def readiness(
     passed = sum(1 for t in tests if t["outcome"] == "passed")
     automated = sum(1 for r in trace if r["status"] in ("verified", "smoke"))
     comp = {
-        "calidad_requerimiento": round(analysis_score * 0.20, 1),
-        "pruebas": round(25 * passed / len(tests), 1) if tests else 0.0,
-        "sast": 10.0 if bandit["status"] == "passed" else 0.0,
-        "secretos": 7.0 if secrets["ok"] else 0.0,
-        "dependencias": 8.0 if deps["status"] == "passed" else 0.0,
-        "trazabilidad": round(15 * automated / len(trace), 1) if trace else 0.0,
-        "documentacion": 5.0 if all(s in readme for s in REQUIRED_SECTIONS) else 0.0,
-        "evidencia_completa": 10.0 if evidence_complete else 0.0,
+        "calidad_requerimiento": round(analysis_score * MAXIMUMS["calidad_requerimiento"] / 100, 1),
+        "pruebas": round(MAXIMUMS["pruebas"] * passed / len(tests), 1) if tests else 0.0,
+        "sast": MAXIMUMS["sast"] if bandit["status"] == "passed" else 0.0,
+        "secretos": MAXIMUMS["secretos"] if secrets["ok"] else 0.0,
+        "dependencias": MAXIMUMS["dependencias"] if deps["status"] == "passed" else 0.0,
+        "trazabilidad": round(MAXIMUMS["trazabilidad"] * automated / len(trace), 1)
+        if trace
+        else 0.0,
+        "documentacion": MAXIMUMS["documentacion"]
+        if all(s in readme for s in REQUIRED_SECTIONS)
+        else 0.0,
+        "evidencia_completa": MAXIMUMS["evidencia_completa"] if evidence_complete else 0.0,
     }
     unverified = []
     if deps["status"] == "skipped":
@@ -57,7 +74,7 @@ def readiness(
     unverified += [f"{r['ac_id']}: requiere verificación manual/operativa"
                    for r in trace if r["status"] == "manual"]  # fmt: skip
     return {"score": round(sum(comp.values())), "threshold": READINESS_THRESHOLD,
-            "components": comp, "unverified": unverified}  # fmt: skip
+            "components": comp, "maximums": dict(MAXIMUMS), "unverified": unverified}  # fmt: skip
 
 
 def build_evidence(

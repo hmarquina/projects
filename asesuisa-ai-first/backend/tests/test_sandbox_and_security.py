@@ -157,6 +157,22 @@ def test_pip_audit_unavailable_is_skipped_not_passed(monkeypatch: pytest.MonkeyP
     assert res["status"] == "skipped" and "NO verificado" in res["reason"]
 
 
+def test_external_tools_do_not_run_with_their_temp_dir_as_cwd(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """En Windows un directorio que es el cwd de un proceso no se puede borrar: PermissionError."""
+    seen: list[Any] = []
+
+    def run(*_a: Any, **kw: Any) -> Any:
+        seen.append(kw.get("cwd"))
+        return subprocess.CompletedProcess([], 0, json.dumps({"dependencies": [], "results": []}), "")
+
+    monkeypatch.setattr(security_checks.subprocess, "run", run)
+    security_checks.check_dependencies(codegen.REQUIREMENTS, audit=True)
+    security_checks.run_bandit({"generated_service/app.py": "x = 1\n"})
+    assert seen == [None, None]
+
+
 # ---------- evidencia y readiness ----------
 def test_traceability_reflects_real_results() -> None:
     mapping = [

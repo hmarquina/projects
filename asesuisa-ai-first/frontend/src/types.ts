@@ -24,7 +24,7 @@ export interface Decision { decision: string; rationale: string; alternatives: s
 
 export interface Step { name: string; status: string; blocking: boolean; detail: string; duration_ms: number }
 export interface TraceRow { ac_id: string; tests: string[]; status: string; reason: string }
-export interface Readiness { score: number; threshold: number; components: Record<string, number>; unverified: string[] }
+export interface Readiness { score: number; threshold: number; components: Record<string, number>; maximums?: Record<string, number>; unverified: string[] }
 export interface Evidence {
   tests: { total: number; passed: number; failed: number };
   security: {

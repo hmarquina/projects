@@ -3,6 +3,7 @@ import { api } from "../api";
 import type { Ctx } from "../context";
 import { can } from "../permissions";
 import { Badge, Card, Empty, ErrorNote, Meter, useAction } from "../ui";
+import { BlockBreakdown } from "./BlockBreakdown";
 import { NeedInitiative } from "./need";
 import { RunPicker, useInitiativeRuns } from "./runs";
 
@@ -59,6 +60,7 @@ export default function Development({ ctx }: { ctx: Ctx }) {
               </table>
             </div>
           </Card>
+          <BlockBreakdown run={run} />
           <Card title="Archivos generados">
             <ul className="files">
               {Object.keys(run.files).map((f) => (

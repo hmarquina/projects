@@ -274,3 +274,9 @@ def test_global_listings_and_evidence(client: TestClient, login) -> None:  # noq
     assert client.get("/pipeline-runs?status=nope", headers=v).status_code == 422
     assert client.get("/releases", headers=v).json() == []
     assert client.get("/pipeline-runs").status_code == 401
+
+
+def test_readiness_exposes_maximums_that_sum_to_100() -> None:
+    from app.pipeline.evidence import MAXIMUMS
+
+    assert sum(MAXIMUMS.values()) == 100

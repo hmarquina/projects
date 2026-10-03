@@ -34,13 +34,13 @@ def scan_secrets(files: dict[str, str]) -> dict[str, Any]:
 
 
 def run_bandit(files: dict[str, str], timeout: int = 60) -> dict[str, Any]:
-    with tempfile.TemporaryDirectory(prefix="bandit-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="bandit-", ignore_cleanup_errors=True) as tmp:
         root = Path(tmp)
         materialize(root, {k: v for k, v in files.items() if k.endswith(".py")})
         cmd = [PYTHON, "-m", "bandit", "-r", str(root), "-f", "json", "-q"]
         try:
             proc = subprocess.run(  # noqa: S603  # nosec B603
-                cmd, capture_output=True, text=True, timeout=timeout, cwd=tmp
+                cmd, capture_output=True, text=True, timeout=timeout
             )
         except subprocess.TimeoutExpired:
             return {"status": "skipped", "reason": "timeout", "high": 0, "medium": 0, "low": 0}
@@ -70,7 +70,7 @@ def check_dependencies(requirements: str, audit: bool, timeout: int = 120) -> di
     if not audit:
         return {"status": "skipped", "reason": "auditoría de vulnerabilidades deshabilitada",
                 "vulnerabilities": 0}  # fmt: skip
-    with tempfile.TemporaryDirectory(prefix="deps-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="deps-", ignore_cleanup_errors=True) as tmp:
         req = Path(tmp) / "requirements.txt"
         req.write_text(requirements, encoding="utf-8")
         cmd = [
@@ -86,7 +86,7 @@ def check_dependencies(requirements: str, audit: bool, timeout: int = 120) -> di
         ]
         try:
             proc = subprocess.run(  # noqa: S603  # nosec B603
-                cmd, capture_output=True, text=True, timeout=timeout, cwd=tmp
+                cmd, capture_output=True, text=True, timeout=timeout
             )
             data = json.loads(proc.stdout)
         except (subprocess.TimeoutExpired, json.JSONDecodeError):

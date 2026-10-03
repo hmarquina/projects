@@ -85,7 +85,7 @@ def build_env(tmp: str, results: Path, windows: bool | None = None) -> dict[str,
 
 
 def run_tests(files: dict[str, str], timeout: int = 90) -> dict[str, Any]:
-    with tempfile.TemporaryDirectory(prefix="pipeline-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="pipeline-", ignore_cleanup_errors=True) as tmp:
         root = Path(tmp)
         materialize(root, files)
         (root / "conftest.py").write_text(_HARNESS, encoding="utf-8")

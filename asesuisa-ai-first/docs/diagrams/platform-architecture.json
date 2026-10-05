@@ -2,22 +2,26 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "AI Engineering Control Tower — arquitectura (estado Fase 5)",
-    "output": "docs/diagrams/platform-architecture.html",
-    "quality_profile": "showcase"
+    "title": "AI Engineering Control Tower — arquitectura",
+    "output": "asesuisa-ai-first/docs/diagrams/platform-architecture.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/hmarquina/projects",
+      "revision": "feed43053e24e7997dc32ce649419fcb11b6b438"
+    }
   },
   "components": [
     {
       "id": "user",
       "type": "external",
       "label": "Usuario",
-      "sublabel": "Analista / Tech Lead",
+      "sublabel": "Analista · Tech Lead · Aprobador",
       "pos": [
         40,
         300
       ],
       "size": [
-        130,
+        150,
         60
       ]
     },
@@ -25,42 +29,81 @@
       "id": "ui",
       "type": "frontend",
       "label": "Control Tower UI",
-      "sublabel": "React/TS · 12 vistas",
+      "sublabel": "React/TS · servida por la API",
       "pos": [
         250,
         300
       ],
       "size": [
-        140,
+        160,
         60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/frontend/src/api.ts",
+          "line": 20,
+          "label": "fetch REST"
+        },
+        {
+          "path": "asesuisa-ai-first/backend/app/main.py",
+          "line": 42,
+          "end_line": 45,
+          "label": "monta frontend/dist"
+        }
       ]
     },
     {
       "id": "api",
       "type": "backend",
       "label": "API de negocio",
-      "sublabel": "FastAPI · RBAC · JWT",
+      "sublabel": "FastAPI · JWT · RBAC",
       "pos": [
-        470,
+        490,
         300
       ],
       "size": [
-        140,
+        150,
         60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/main.py",
+          "line": 22,
+          "end_line": 28,
+          "label": "routers"
+        },
+        {
+          "path": "asesuisa-ai-first/backend/app/security.py",
+          "line": 98,
+          "label": "require(permiso)"
+        }
       ]
     },
     {
       "id": "orch",
       "type": "backend",
       "label": "Orquestación IA",
-      "sublabel": "prompts · gate DoR",
+      "sublabel": "gate DoR · artefactos",
       "pos": [
-        700,
+        720,
         300
       ],
       "size": [
         150,
         60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/routers/artifacts.py",
+          "line": 59,
+          "end_line": 75,
+          "label": "gate DoR"
+        },
+        {
+          "path": "asesuisa-ai-first/backend/app/routers/analysis.py",
+          "line": 51,
+          "label": "gateway.run"
+        }
       ]
     },
     {
@@ -75,34 +118,41 @@
       "size": [
         150,
         60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/ai/gateway.py",
+          "line": 47,
+          "end_line": 76,
+          "label": "run()"
+        },
+        {
+          "path": "asesuisa-ai-first/backend/app/ai/guardrails.py",
+          "line": 70,
+          "label": "redact"
+        }
       ]
     },
     {
       "id": "provider",
       "type": "external",
       "label": "Proveedor LLM",
-      "sublabel": "mock hoy · configurable",
+      "sublabel": "mock determinista hoy",
       "pos": [
-        1200,
+        1180,
         300
       ],
       "size": [
-        150,
+        160,
         60
-      ]
-    },
-    {
-      "id": "db",
-      "type": "database",
-      "label": "Base de datos",
-      "sublabel": "SQLite · PostgreSQL 16",
-      "pos": [
-        250,
-        450
       ],
-      "size": [
-        140,
-        60
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/ai/provider.py",
+          "line": 26,
+          "end_line": 33,
+          "label": "MockProvider"
+        }
       ]
     },
     {
@@ -111,40 +161,92 @@
       "label": "Auditoría",
       "sublabel": "hash encadenado",
       "pos": [
-        470,
+        490,
         150
       ],
       "size": [
-        140,
+        150,
         60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/audit.py",
+          "line": 29,
+          "label": "record"
+        },
+        {
+          "path": "asesuisa-ai-first/backend/app/audit.py",
+          "line": 49,
+          "label": "verify_chain"
+        }
       ]
     },
     {
       "id": "eval",
       "type": "backend",
       "label": "Evaluación IA",
-      "sublabel": "golden datasets · CI",
+      "sublabel": "golden datasets · gate CI",
       "pos": [
-        700,
+        720,
         150
       ],
       "size": [
         150,
         60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/ai/evaluation.py",
+          "line": 44,
+          "label": "evaluate"
+        }
+      ]
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "Base de datos",
+      "sublabel": "SQLite · PostgreSQL",
+      "pos": [
+        250,
+        450
+      ],
+      "size": [
+        160,
+        60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/db.py",
+          "line": 25,
+          "label": "create_engine"
+        },
+        {
+          "path": "asesuisa-ai-first/backend/app/config.py",
+          "line": 12,
+          "label": "DATABASE_URL"
+        }
       ]
     },
     {
       "id": "pipeline",
       "type": "backend",
       "label": "Pipeline de entrega",
-      "sublabel": "política · pruebas · SAST",
+      "sublabel": "política · pruebas · readiness",
       "pos": [
-        465,
+        490,
         450
       ],
       "size": [
         150,
         60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/pipeline/orchestrator.py",
+          "line": 62,
+          "label": "run()"
+        }
       ]
     },
     {
@@ -153,14 +255,22 @@
       "label": "Aprobación humana",
       "sublabel": "segregación de funciones",
       "pos": [
-        700,
+        720,
         450
       ],
       "size": [
         150,
         60
       ],
-      "tag": "gate"
+      "tag": "gate",
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/routers/pipeline.py",
+          "line": 201,
+          "end_line": 217,
+          "label": "decide"
+        }
+      ]
     },
     {
       "id": "release",
@@ -174,6 +284,66 @@
       "size": [
         150,
         60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/pipeline/release.py",
+          "line": 12,
+          "label": "build_package"
+        },
+        {
+          "path": "asesuisa-ai-first/backend/app/routers/pipeline.py",
+          "line": 248,
+          "end_line": 250,
+          "label": "solo aprobadas"
+        }
+      ]
+    },
+    {
+      "id": "sandbox",
+      "type": "backend",
+      "label": "Sandbox de pruebas",
+      "sublabel": "proceso aislado, no contenedor",
+      "pos": [
+        360,
+        600
+      ],
+      "size": [
+        180,
+        60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/pipeline/sandbox.py",
+          "line": 87,
+          "label": "run_tests"
+        }
+      ]
+    },
+    {
+      "id": "scans",
+      "type": "security",
+      "label": "Escaneos de seguridad",
+      "sublabel": "bandit · secretos · pip-audit",
+      "pos": [
+        580,
+        600
+      ],
+      "size": [
+        180,
+        60
+      ],
+      "sources": [
+        {
+          "path": "asesuisa-ai-first/backend/app/pipeline/security_checks.py",
+          "line": 36,
+          "label": "run_bandit"
+        },
+        {
+          "path": "asesuisa-ai-first/backend/app/pipeline/security_checks.py",
+          "line": 63,
+          "label": "check_dependencies"
+        }
       ]
     }
   ],
@@ -186,12 +356,14 @@
         "api",
         "orch",
         "gateway",
-        "db",
         "audit",
         "eval",
+        "db",
         "pipeline",
         "approval",
-        "release"
+        "release",
+        "sandbox",
+        "scans"
       ]
     }
   ],
@@ -207,13 +379,13 @@
       "id": "ui-to-api",
       "from": "ui",
       "to": "api",
-      "label": "REST"
+      "label": "REST + JWT"
     },
     {
       "id": "api-to-orch",
       "from": "api",
       "to": "orch",
-      "label": "gate",
+      "label": "gate DoR",
       "variant": "emphasis"
     },
     {
@@ -278,6 +450,22 @@
       "to": "release",
       "label": "aprobado",
       "variant": "security"
+    },
+    {
+      "id": "pipeline-to-sandbox",
+      "from": "pipeline",
+      "to": "sandbox",
+      "label": "pruebas",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "pipeline-to-scans",
+      "from": "pipeline",
+      "to": "scans",
+      "label": "SAST · secretos",
+      "fromSide": "bottom",
+      "toSide": "top"
     }
   ],
   "cards": [
@@ -286,10 +474,9 @@
       "title": "Implementado y probado",
       "items": [
         "API con JWT, RBAC y segregación de funciones",
-        "Gate de Definition of Ready; Gateway con redacción de PII",
+        "Gate Definition of Ready y Gateway con redacción de PII",
         "Pipeline: código y pruebas generados, ejecutados y auditados",
-        "UI Control Tower: 27 pruebas y E2E de 16 pasos en navegador real",
-        "Suite completa también contra PostgreSQL 16 real"
+        "180 pruebas de backend, 30 de UI y E2E de 16 pasos; CI en verde"
       ]
     },
     {
@@ -297,18 +484,18 @@
       "title": "Controles",
       "items": [
         "Política estática antes de ejecutar código generado",
-        "Pruebas contra el contrato OpenAPI, SAST y escaneo de secretos",
+        "SAST, escaneo de secretos y auditoría de dependencias (opcional, requiere red)",
         "Aprobación humana con reconocimiento de riesgos",
         "Auditoría append-only con hash encadenado"
       ]
     },
     {
       "dot": "amber",
-      "title": "Pendiente o sin ejecutar",
+      "title": "Pendiente o limitado",
       "items": [
         "Proveedor LLM real: hoy solo mock determinista",
-        "Aislamiento por contenedor sin red para el sandbox",
-        "Dockerfile, Compose y CI: escritos, no ejecutados",
+        "Sandbox de proceso; en Windows sin límites de CPU/memoria",
+        "Dockerfile y Compose escritos, no construidos",
         "RAG, OpenTelemetry y OIDC: solo diseño"
       ]
     }

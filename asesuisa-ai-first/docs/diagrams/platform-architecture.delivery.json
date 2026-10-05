@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "b3d81fe5-e0f1-47dc-8f96-c339c1707125",
+  "receiptId": "0f9ec019-76e9-4525-9e8d-e561069b1cb1",
   "status": "current",
   "command": "deliver",
   "type": "architecture",
   "input": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.json",
   "output": "/home/user/projects/asesuisa-ai-first/docs/diagrams/platform-architecture.html",
   "specification": {
-    "sha256": "6521dd73aeefba10f8c981c316cf4d3e879e3720b5e687d3d6e48a0988b9731f",
-    "bytes": 6221
+    "sha256": "ef0d77bbe6ecb1f8f25e9d50869dcd77a2515733e7f759c6df38b9b8127f371c",
+    "bytes": 10770
   },
   "artifact": {
-    "sha256": "825fd03e629a9790fd7566431e7da18e582002ecd1bf981a5a9ad6ffab0a79ab",
-    "bytes": 768246
+    "sha256": "bc7d45593fe7cd7a7bdf63a4c0d110dd08ea62a1b30840b3d41926d09853be43",
+    "bytes": 778556
   }
 }
